@@ -16,7 +16,5 @@ class Piece:
 
 rook = Piece('w',)
 
-currentPos = rook.get_location()
-
 class GameBoard:
     def __init__(self):
