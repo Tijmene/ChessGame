@@ -12,6 +12,11 @@ class Location:
     def get_rank(self):
         return self.rank
 
+    def to_string(self):
+        file = self.get_file()
+        rank = self.get_rank()
+        return file + str(rank)
+
 class Piece:
     color: chr
     location: Location
@@ -54,19 +59,28 @@ class Piece:
 kind_dict = {'A': 'R', 'B': 'N', 'C': 'B', 'D': 'Q', 'E': 'K', 'F': 'R', 'G': 'N', 'H': 'B'}
 
 
-def initial_piece(location):
-    if location.get_rank() == 2 or location.get_rank() == 7:
+def initial_piece(pos):
+    if pos.get_rank() == 2 or pos.get_rank() == 7:
         kind = 'P'
     else:
-        kind = kind_dict[location.get_file()]
+        kind = kind_dict[pos.get_file()]
 
-    if location.get_rank() < 3:
-        piece = Piece('W', location, kind)
-    elif location.get_rank() > 6:
-        piece = Piece('B', location, kind)
+    if pos.get_rank() < 3:
+        piece = Piece('W', pos, kind)
+    elif pos.get_rank() > 6:
+        piece = Piece('B', pos, kind)
     else:
         return None
     return piece
+
+
+def create_game_board():
+    initial_board = dict()
+    for file in range(65, 73):
+        for rank in range(1, 9):
+            pos = Location(chr(file), rank)
+            initial_board[pos.to_string()] = initial_piece(pos)
+    return initial_board
 
 
 class Game:
@@ -74,16 +88,7 @@ class Game:
     game_board: dict
 
     def __init__(self):
-        self.game_board = self.create_game_board()
-
-    def create_game_board(self):
-        initial_board = dict()
-        for file in range(65, 73):
-            for rank in range(1, 9):
-                initial_location = Location(chr(file), rank)
-                file_rank_key = chr(file) + str(rank)
-                initial_board[file_rank_key] = initial_piece(initial_location)
-        return initial_board
+        self.game_board = create_game_board()
 
     def get_game_board(self):
         return self.game_board
