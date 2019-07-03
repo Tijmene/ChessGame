@@ -96,6 +96,14 @@ class Game:
         string_pos = pos.to_string()
         return game_board[string_pos]
 
+    def move_piece(self, prev_pos, new_pos):
+        game_board = self.game_board
+        prev_pos = prev_pos.to_string()
+        new_pos = new_pos.to_string()
+        piece = game_board[prev_pos]
+        self.game_board[prev_pos] = None
+        self.game_board[new_pos] = piece
+
 
 # def create_move_vector(kind, position):
 #     if kind == 'R':

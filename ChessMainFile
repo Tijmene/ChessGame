@@ -6,15 +6,11 @@ import GUI as gui
 import tkinter as tk
 import time
 
-if __name__ == "__main__":
-    game = chess.Game()
-    root = tk.Tk()
-    state_board = game.get_game_board()
+
+def initialize_board():
     gui_board = gui.GameBoard(root)
     piece_size = int(gui_board.get_size() * 0.8)
     gui_board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-
-
     counter = 0
     for pos in state_board:
         piece = state_board[pos]
@@ -33,3 +29,12 @@ if __name__ == "__main__":
     root.mainloop()
 
 
+if __name__ == "__main__":
+    game = chess.Game()
+    root = tk.Tk()
+    state_board = game.get_game_board()
+    initialize_board()
+
+    # Example move, Pawn from A2 to A4
+    game.move_piece(chess.Position('A', 2), chess.Position('A', 4))
+    # We need some way to update the board.
