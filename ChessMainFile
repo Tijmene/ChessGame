@@ -1,29 +1,31 @@
 import PIL
 from PIL import Image
+import PIL.ImageTk
 import ChessGameElements as chess
 import GUI as gui
 import tkinter as tk
 import time
 
-
 if __name__ == "__main__":
     game = chess.Game()
     root = tk.Tk()
     state_board = game.get_game_board()
-    gui_board = gui.GameBoard(root)
-    gui_board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-    counter = 0
 
-    for pos in state_board:
-        piece = state_board[pos]
-        if piece != None:
-            image_name = piece.color + piece.kind
-            im = PIL.Image.open("./icons/" + image_name + ".PNG")
-            piece_size = int(gui_board.get_size() * 0.8)
-            im = im.resize((piece_size, piece_size), Image.ANTIALIAS)
-            chess_piece = PIL.ImageTk.PhotoImage(im)
-            position = piece.get_position()
-            (vec_pos_f, vec_pos_r) = position.to_vec()
-            gui_board.addpiece(image_name + str(counter), chess_piece, vec_pos_f, vec_pos_r)
-            counter += 1
-    root.mainloop()
+
+    # Does not work for reasons unknown.
+    # for pos in state_board:
+    #     piece = state_board[pos]
+    #     if piece is not None:
+    #         chess_piece = None
+    #         image_name = piece.color + piece.kind
+    #         image_file = PIL.Image.open("./icons/" + image_name + ".PNG")
+    #         image_file = image_file.resize((piece_size, piece_size), Image.ANTIALIAS)
+    #         chess_piece = PIL.ImageTk.PhotoImage(image_file)
+    #         position = piece.get_position()
+    #         (vec_pos_f, vec_pos_r) = position.to_vec()
+    #         piece_name = image_name + str(counter)
+    #         pieces_image_list.append((piece_name, chess_piece, (vec_pos_f, vec_pos_r)))
+    #         counter += 1
+    # for name, image, (vec_pos_f, vec_pos_r) in pieces_image_list:
+    #     gui_board.addpiece(piece_name, chess_piece, vec_pos_f, vec_pos_r)
+
