@@ -1,6 +1,12 @@
+import ChessGameElements
 import tkinter as tk
+import PIL.Image
+import PIL.ImageTk
+from PIL import Image
+
+
 class GameBoard(tk.Frame):
-    def __init__(self, parent, rows=8, columns=8, size=32, color1="white", color2="black"):
+    def __init__(self, parent, rows=8, columns=8, size=32, color1="white", color2="blue"):
         '''size is the size of a square, in pixels'''
 
         self.rows = rows
@@ -24,20 +30,20 @@ class GameBoard(tk.Frame):
 
     def addpiece(self, name, image, row=0, column=0):
         '''Add a piece to the playing board'''
-        self.canvas.create_image(0,0, image=image, tags=(name, "piece"), anchor="c")
+        self.canvas.create_image(1, 1, image=image, tags=(name, "piece"), anchor="c")
         self.placepiece(name, row, column)
 
     def placepiece(self, name, row, column):
         '''Place a piece at the given row/column'''
         self.pieces[name] = (row, column)
-        x0 = (column * self.size) + int(self.size/2)
-        y0 = (row * self.size) + int(self.size/2)
+        x0 = (column * self.size) + int(self.size / 2)
+        y0 = (row * self.size) + int(self.size / 2)
         self.canvas.coords(name, x0, y0)
 
     def refresh(self, event):
         '''Redraw the board, possibly in response to window being resized'''
-        xsize = int((event.width-1) / self.columns)
-        ysize = int((event.height-1) / self.rows)
+        xsize = int((event.width - 1) / self.columns)
+        ysize = int((event.height - 1) / self.rows)
         self.size = min(xsize, ysize)
         self.canvas.delete("square")
         color = self.color2
@@ -55,37 +61,18 @@ class GameBoard(tk.Frame):
         self.canvas.tag_raise("piece")
         self.canvas.tag_lower("square")
 
-
-# image comes from the silk icon set which is under a Creative Commons
-# license. For more information see http://www.famfamfam.com/lab/icons/silk/
-imagedata = '''
-    R0lGODlhEAAQAOeSAKx7Fqx8F61/G62CILCJKriIHM+HALKNMNCIANKKANOMALuRK7WOVLWPV9eR
-    ANiSANuXAN2ZAN6aAN+bAOCcAOKeANCjKOShANKnK+imAOyrAN6qSNaxPfCwAOKyJOKyJvKyANW0
-    R/S1APW2APW3APa4APe5APm7APm8APq8AO28Ke29LO2/LO2/L+7BM+7BNO6+Re7CMu7BOe7DNPHA
-    P+/FOO/FO+jGS+/FQO/GO/DHPOjBdfDIPPDJQPDISPDKQPDKRPDIUPHLQ/HLRerMV/HMR/LNSOvH
-    fvLOS/rNP/LPTvLOVe/LdfPRUfPRU/PSU/LPaPPTVPPUVfTUVvLPe/LScPTWWfTXW/TXXPTXX/XY
-    Xu/SkvXZYPfVdfXaY/TYcfXaZPXaZvbWfvTYe/XbbvHWl/bdaPbeavvadffea/bebvffbfbdfPvb
-    e/fgb/Pam/fgcvfgePTbnfbcl/bfivfjdvfjePbemfjelPXeoPjkePbfmvffnvbfofjlgffjkvfh
-    nvjio/nnhvfjovjmlvzlmvrmpvrrmfzpp/zqq/vqr/zssvvvp/vvqfvvuPvvuvvwvfzzwP//////
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////yH+FUNyZWF0ZWQgd2l0aCBU
-    aGUgR0lNUAAh+QQBCgD/ACwAAAAAEAAQAAAIzAD/CRxIsKDBfydMlBhxcGAKNIkgPTLUpcPBJIUa
-    +VEThswfPDQKokB0yE4aMFiiOPnCJ8PAE20Y6VnTQMsUBkWAjKFyQaCJRYLcmOFipYmRHzV89Kkg
-    kESkOme8XHmCREiOGC/2TBAowhGcAyGkKBnCwwKAFnciCAShKA4RAhyK9MAQwIMMOQ8EdhBDKMuN
-    BQMEFPigAsoRBQM1BGLjRIiOGSxWBCmToCCMOXSW2HCBo8qWDQcvMMkzCNCbHQga/qMgAYIDBQZU
-    yxYYEAA7
-'''
-
-
+    def get_size(self):
+        return self.size
 
 if __name__ == "__main__":
+    im = PIL.Image.open("./icons/WhitePawn.png")
     root = tk.Tk()
     board = GameBoard(root)
+    piece_size = int(board.get_size() * 0.8)
+    im = im.resize((piece_size, piece_size), Image.ANTIALIAS)
+
     board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-    player1 = tk.PhotoImage(data=imagedata)
-    board.addpiece("player1", player1, 2,0)
+    player1 = PIL.ImageTk.PhotoImage(im)
+    # player1.subsample(25)
+    board.addpiece("player1", player1, 2, 0)
     root.mainloop()

@@ -1,0 +1,29 @@
+import PIL
+from PIL import Image
+import ChessGameElements as chess
+import GUI as gui
+import tkinter as tk
+import time
+
+
+if __name__ == "__main__":
+    game = chess.Game()
+    root = tk.Tk()
+    state_board = game.get_game_board()
+    gui_board = gui.GameBoard(root)
+    gui_board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+    counter = 0
+
+    for pos in state_board:
+        piece = state_board[pos]
+        if piece != None:
+            image_name = piece.color + piece.kind
+            im = PIL.Image.open("./icons/" + image_name + ".PNG")
+            piece_size = int(gui_board.get_size() * 0.8)
+            im = im.resize((piece_size, piece_size), Image.ANTIALIAS)
+            chess_piece = PIL.ImageTk.PhotoImage(im)
+            position = piece.get_position()
+            (vec_pos_f, vec_pos_r) = position.to_vec()
+            gui_board.addpiece(image_name + str(counter), chess_piece, vec_pos_f, vec_pos_r)
+            counter += 1
+    root.mainloop()

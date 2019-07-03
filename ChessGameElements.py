@@ -17,6 +17,12 @@ class Position:
         rank = self.get_rank()
         return file + str(rank)
 
+    def to_vec(self):
+        file = self.get_file()
+        rank = self.get_rank() - 1
+        vec_file = ord(file) - 65
+        return rank, vec_file
+
 
 class Piece:
     color: chr
@@ -26,7 +32,7 @@ class Piece:
 
     def __init__(self, color, start_position, kind):
         self.color = color.upper()
-        self.location = start_position
+        self.position = start_position
         self.kind = kind.upper()
         self.points = set_points(kind.upper())
 
@@ -36,11 +42,11 @@ class Piece:
     def get_kind(self):
         return self.kind
 
-    def get_location(self):
-        return self.location
+    def get_position(self):
+        return self.position
 
     def move(self, new_position):
-        self.location = new_position
+        self.position = new_position
 
 
 def set_points(kind):
@@ -48,7 +54,7 @@ def set_points(kind):
     return point_dict[kind]
 
 
-kind_dict = dict(A='R', B='N', C='B', D='Q', E='K', F='R', G='N', H='B')
+kind_dict = dict(A='R', B='N', C='B', D='Q', E='K', F='B', G='N', H='R')
 
 
 def initial_piece(pos):
@@ -104,10 +110,9 @@ class Game:
 #
 #     elif kind == 'P':
 
+if __name__ == "__main__":
+    new_game = Game()
 
-new_game = Game()
+    pos = Position('A',1)
+    x = new_game.query_game_board(pos)
 
-pos = Position('A',1)
-x = new_game.query_game_board(pos)
-
-y = 2
