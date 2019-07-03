@@ -1,4 +1,4 @@
-class Location:
+class Position:
     file: str
     rank: int
 
@@ -17,17 +17,18 @@ class Location:
         rank = self.get_rank()
         return file + str(rank)
 
+
 class Piece:
     color: chr
-    location: Location
+    Position: Position
     kind: str
     points: int
 
-    def __init__(self, color, start_location, kind):
+    def __init__(self, color, start_position, kind):
         self.color = color.upper()
-        self.location = start_location
+        self.location = start_position
         self.kind = kind.upper()
-        self.points = self.set_points(kind.upper())
+        self.points = set_points(kind.upper())
 
     def get_color(self):
         return self.color
@@ -38,25 +39,16 @@ class Piece:
     def get_location(self):
         return self.location
 
-    def move(self, new_location):
-        self.location = new_location
-
-    def set_points(self, kind):
-        if kind == 'K':
-            return 100
-        if kind == 'Q':
-            return 9
-        if kind == 'N':
-            return 3
-        if kind == 'B':
-            return 3
-        if kind == 'R':
-            return 5
-        if kind == 'P':
-            return 1
+    def move(self, new_position):
+        self.location = new_position
 
 
-kind_dict = {'A': 'R', 'B': 'N', 'C': 'B', 'D': 'Q', 'E': 'K', 'F': 'R', 'G': 'N', 'H': 'B'}
+def set_points(kind):
+    point_dict = {'K': 100, 'Q': 9, 'N': 3, 'B': 3, 'R': 5, 'P': 1}
+    return point_dict[kind]
+
+
+kind_dict = dict(A='R', B='N', C='B', D='Q', E='K', F='R', G='N', H='B')
 
 
 def initial_piece(pos):
@@ -78,7 +70,7 @@ def create_game_board():
     initial_board = dict()
     for file in range(65, 73):
         for rank in range(1, 9):
-            pos = Location(chr(file), rank)
+            pos = Position(chr(file), rank)
             initial_board[pos.to_string()] = initial_piece(pos)
     return initial_board
 
@@ -93,8 +85,13 @@ class Game:
     def get_game_board(self):
         return self.game_board
 
+    def query_game_board(self, pos):
+        game_board = self.game_board
+        string_pos = pos.to_string()
+        return game_board[string_pos]
 
-# def create_move_vector(kind, location):
+
+# def create_move_vector(kind, position):
 #     if kind == 'R':
 #
 #     elif kind == 'K':
@@ -110,4 +107,7 @@ class Game:
 
 new_game = Game()
 
-x = 3
+pos = Position('A',1)
+x = new_game.query_game_board(pos)
+
+y = 2
