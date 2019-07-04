@@ -19,22 +19,24 @@ class Position:
 
     def to_vec(self):
         file = self.get_file()
-        rank = self.get_rank() - 1
+        vec_rank = self.get_rank() - 1
         vec_file = ord(file) - 65
-        return rank, vec_file
+        return vec_rank, vec_file
 
 
 class Piece:
     color: chr
-    Position: Position
+    position: Position
     kind: str
     points: int
+    name: str
 
-    def __init__(self, color, start_position, kind):
+    def __init__(self, color, start_position, kind, name):
         self.color = color.upper()
         self.position = start_position
         self.kind = kind.upper()
         self.points = set_points(kind.upper())
+        self.name = name
 
     def get_color(self):
         return self.color
@@ -45,9 +47,11 @@ class Piece:
     def get_position(self):
         return self.position
 
-    def move(self, new_position):
-        self.position = new_position
+    def get_name(self):
+        return self.name
 
+    def update_position(self, new_position):
+        self.position = new_position
 
 def set_points(kind):
     point_dict = {'K': 100, 'Q': 9, 'N': 3, 'B': 3, 'R': 5, 'P': 1}
@@ -64,9 +68,9 @@ def initial_piece(pos):
         kind = kind_dict[pos.get_file()]
 
     if pos.get_rank() < 3:
-        piece = Piece('W', pos, kind)
+        piece = Piece('W', pos, kind, pos.to_string())
     elif pos.get_rank() > 6:
-        piece = Piece('B', pos, kind)
+        piece = Piece('B', pos, kind, pos.to_string())
     else:
         return None
     return piece
@@ -96,13 +100,14 @@ class Game:
         string_pos = pos.to_string()
         return game_board[string_pos]
 
-    def move_piece(self, prev_pos, new_pos):
+    def move_piece_state(self, prev_pos, new_pos):
         game_board = self.game_board
-        prev_pos = prev_pos.to_string()
-        new_pos = new_pos.to_string()
-        piece = game_board[prev_pos]
-        self.game_board[prev_pos] = None
-        self.game_board[new_pos] = piece
+        new_pos_str = new_pos.to_string()
+        prev_pos_str = prev_pos.to_string()
+        piece = game_board[prev_pos_str]
+        piece.update_position(new_pos)
+        self.game_board[prev_pos_str] = None
+        self.game_board[new_pos_str] = piece
 
 
 # def create_move_vector(kind, position):
