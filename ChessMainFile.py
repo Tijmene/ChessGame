@@ -13,5 +13,3 @@ if __name__ == "__main__":
 
     # Display the graphical representation of the board
     root.mainloop()
-    root.
-
