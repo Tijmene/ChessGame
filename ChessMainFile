@@ -4,9 +4,6 @@ import PIL.ImageTk
 import ChessGameElements as chess
 import GUI as gui
 import tkinter as tk
-import time
-
-
 
 
 

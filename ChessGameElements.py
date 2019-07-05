@@ -53,15 +53,20 @@ class Piece:
     def update_position(self, new_position):
         self.position = new_position
 
+
 def set_points(kind):
     point_dict = {'K': 100, 'Q': 9, 'N': 3, 'B': 3, 'R': 5, 'P': 1}
     return point_dict[kind]
 
 
-kind_dict = dict(A='R', B='N', C='B', D='Q', E='K', F='B', G='N', H='R')
-
-
 def initial_piece(pos):
+    kind_dict = {
+        **dict.fromkeys(['A', 'H'], 'R'),
+        **dict.fromkeys(['B', 'G'], 'N'),
+        **dict.fromkeys(['C', 'F'], 'B'),
+        'D': 'Q',
+        'E': 'K'
+    }
     if pos.get_rank() == 2 or pos.get_rank() == 7:
         kind = 'P'
     else:
@@ -98,7 +103,8 @@ class Game:
     def query_game_board(self, pos):
         game_board = self.game_board
         string_pos = pos.to_string()
-        return game_board[string_pos]
+        piece = game_board[string_pos]
+        return piece
 
     def move_piece_state(self, prev_pos, new_pos):
         game_board = self.game_board
@@ -126,6 +132,5 @@ class Game:
 if __name__ == "__main__":
     new_game = Game()
 
-    pos = Position('A',1)
+    pos = Position('A', 1)
     x = new_game.query_game_board(pos)
-
