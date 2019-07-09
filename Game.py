@@ -1,6 +1,6 @@
 from StateBoard import StateBoard
 from GUIBoard import GUIBoard
-import tkinter as tk
+from Position import vec_to_pos
 
 
 class Game:
