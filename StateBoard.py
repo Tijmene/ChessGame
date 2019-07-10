@@ -24,6 +24,10 @@ class StateBoard:
         self.state_board[prev_pos_str] = None
         self.state_board[new_pos_str] = piece
 
+    # TODO At the moment this is a dummy function, this function should use the stateboard to check if a proposed move
+    #  is legal (return True) or illegal (return False)
+    def check_move(self, prev_pos, new_pos):
+        return True
 
 def create_state_board():
     initial_board = dict()

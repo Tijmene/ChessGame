@@ -4,13 +4,14 @@ from Position import vec_to_pos
 
 
 class Game:
-    turn_counter: int
+    turn_counter = 0
     state_board: StateBoard
     gui_board: GUIBoard
 
-    def __init__(self, root):
+    def __init__(self, root, GUI=True):
         self.state_board = StateBoard()
-        self.gui_board = GUIBoard(root, self.state_board)
+        if GUI:
+            self.gui_board = GUIBoard(root, self.state_board, self.turn_counter)
 
     def get_game_state(self):
         return self.state_board
