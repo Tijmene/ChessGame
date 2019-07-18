@@ -48,6 +48,9 @@ class GUIBoard(tk.Frame):
         x0 = (col * self.size) + int(self.size / 2)
         self.canvas.coords(name, x0, y0)
 
+    def remove_piece(self, name):
+        self.canvas.delete(name)
+
     def update_board(self, state_board):
         """This function can be used if the user wants to see a snapshot of the board but runs the game mainly on the
         state_board without showing the GUI"""
@@ -75,23 +78,26 @@ class GUIBoard(tk.Frame):
         y2 = y1 + self.size
 
         new_pos = vec_to_pos(row, col)
-        prev_pos = self.selected_square
-        piece = self.state_board.query_game_board(new_pos)
+        selected_piece = self.state_board.query_game_board(new_pos)
         turn_bool = False
 
-        if piece is not None:
-            turn_counter = self.turn_counter
-            even_turn = turn_counter % 2 == 0
-            turn_bool = (piece.get_color() == "W" and even_turn) or (piece.get_color() == "B" and not even_turn)
+        if selected_piece is not None:
+            even_turn = self.turn_counter % 2 == 0
+            turn_bool = (selected_piece.get_color() == "W" and even_turn) or (
+                    selected_piece.get_color() == "B" and not even_turn)
 
         if turn_bool:
-            self.piece_to_move = piece
+            self.piece_to_move = selected_piece
             self.canvas.delete("square_selected")
-            self.selected_square = vec_to_pos(row, col)
+            self.selected_square = new_pos
             self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=self.color3, tags="square_selected")
             self.canvas.tag_raise("piece")
 
-        if piece is None and self.piece_to_move is not None and self.state_board.check_move(prev_pos, new_pos):
+        prev_pos = self.selected_square
+        if not turn_bool and prev_pos is not None and self.state_board.check_move(prev_pos, new_pos):
+            target_piece = self.state_board.query_game_board(new_pos)
+            if target_piece is not None and new_pos.to_string() != prev_pos.to_string():
+                self.canvas.delete(target_piece.get_name())
             self.state_board.move_piece_state(self.selected_square, new_pos)
             piece_name = self.piece_to_move.get_name()
             self.place_piece(piece_name, new_pos)
