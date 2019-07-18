@@ -6,7 +6,7 @@ from Position import vec_to_pos
 
 class GUIBoard(tk.Frame):
     def __init__(self, parent, state_board, turn_counter, rows=8, columns=8, size=32, piece_scale=0.7,
-                 color_white="white", color_black="blue", color_selected_square="yellow", color_target_square="pink"):
+                 color_white="white", color_black="gray63", color_selected_square="gold", color_target_square="khaki1"):
         self.rows = rows                    # Amount of rows that the board has
         self.columns = columns              # Amount of columns that the board has
         self.size = size                    # Size of a square in pixels
