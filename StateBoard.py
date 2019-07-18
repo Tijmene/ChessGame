@@ -29,6 +29,7 @@ class StateBoard:
     def check_move(self, prev_pos, new_pos):
         return True
 
+
 def create_state_board():
     initial_board = dict()
     for file in range(65, 73):

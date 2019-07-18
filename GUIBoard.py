@@ -51,6 +51,7 @@ class GUIBoard(tk.Frame):
     def update_board(self, state_board):
         """This function can be used if the user wants to see a snapshot of the board but runs the game mainly on the
         state_board without showing the GUI"""
+        self.turn_counter += 1
         for pos in state_board:
             piece = state_board[pos]
             if piece is not None:

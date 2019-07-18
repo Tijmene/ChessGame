@@ -1,5 +1,6 @@
 from StateBoard import StateBoard
 from GUIBoard import GUIBoard
+import tkinter as tk
 from Position import vec_to_pos
 
 
@@ -20,7 +21,9 @@ class Game:
         return self.gui_board
 
     def move_piece(self, prev_pos, new_pos, update_GUI=True):
+        self.turn_counter += 1
         self.state_board.move_piece_state(prev_pos, new_pos)
         if update_GUI:
             current_state_board = self.state_board.get_game_state()
             self.gui_board.update_board(current_state_board)
+
