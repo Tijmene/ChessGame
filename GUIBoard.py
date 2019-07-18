@@ -4,16 +4,16 @@ import PIL.ImageTk
 from PIL import Image
 from Position import vec_to_pos
 
-
 class GUIBoard(tk.Frame):
-    def __init__(self, parent, state_board, turn_counter, rows=8, columns=8, size=32, piece_scale=0.7, color1="white",
-                 color2="blue", color3="yellow"):
+    def __init__(self, parent, state_board, turn_counter, rows=8, columns=8, size=32, piece_scale=0.7,
+                 color_white="white", color_black="blue", color_selected_square="yellow", color_target_square="pink"):
         self.rows = rows                    # Amount of rows that the board has
         self.columns = columns              # Amount of columns that the board has
         self.size = size                    # Size of a square in pixels
-        self.color1 = color1                # Color of the "White" tiles
-        self.color2 = color2                # Color of the "Black tiles
-        self.color3 = color3                # Color of the tile that is selected
+        self.color1 = color_white           # Color of the "White" tiles
+        self.color2 = color_black           # Color of the "Black tiles
+        self.color3 = color_selected_square # Color of the tile that is selected
+        self.color4 = color_target_square   # Color of the target square
         self.pieces = {}                    # Dictionary that will contain the name of the pieces with their location
         self.selected_square = None         # Position of the Square that is currently selected
         self.piece_size = int(self.size * piece_scale)    # Size of the pieces on the chessboard
@@ -87,10 +87,23 @@ class GUIBoard(tk.Frame):
                     selected_piece.get_color() == "B" and not even_turn)
 
         if turn_bool:
+            # Highlight the square of the currently selected piece
             self.piece_to_move = selected_piece
             self.canvas.delete("square_selected")
+            self.canvas.delete("square_target")
             self.selected_square = new_pos
             self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=self.color3, tags="square_selected")
+            # Highlight the possible target squares for the currently selected piece
+            legal_moves = self.state_board.get_legal_moves(new_pos)
+            for move in legal_moves:
+                row, col = move.to_vec()
+                x1 = (col * self.size)
+                y1 = (row * self.size)
+                x2 = x1 + self.size
+                y2 = y1 + self.size
+
+                self.canvas.create_oval(x1, y1, x2, y2, outline="black", fill=self.color4, tags="square_target")
+
             self.canvas.tag_raise("piece")
 
         prev_pos = self.selected_square
@@ -103,6 +116,7 @@ class GUIBoard(tk.Frame):
             self.place_piece(piece_name, new_pos)
             self.piece_to_move = None
             self.canvas.delete("square_selected")
+            self.canvas.delete("square_target")
             self.turn_counter += 1
             self.selected_square = None
 
