@@ -1,8 +1,11 @@
-from Position import Position as Pos
+from Position import Position as Pos, vec_to_pos
 from Piece import Piece
+import numpy as np
 
 
 class StateBoard:
+    state_board: dict
+
     def __init__(self):
         self.state_board = create_state_board()
 
@@ -12,8 +15,8 @@ class StateBoard:
     def query_game_board(self, pos):
         game_board = self.state_board
         string_pos = pos.to_string()
-        piece = game_board[string_pos]
-        return piece
+        element = game_board[string_pos]
+        return element
 
     def move_piece_state(self, prev_pos, new_pos):
         game_board = self.state_board
@@ -27,8 +30,43 @@ class StateBoard:
     # TODO At the moment this is a dummy function, this function should use the stateboard to check if a proposed move
     #  is legal (return True) or illegal (return False)
     def check_move(self, prev_pos, new_pos):
-        return True
+        prev_pos_string = prev_pos.to_string()
+        piece_to_move = self.state_board[prev_pos_string]
+        if piece_to_move is not None:
+            legal_moves = []
+            if piece_to_move.get_kind() == 'P':
+                pass
+            if piece_to_move.get_kind() == 'N':
+                possible_pos_shift = np.array([[1,2], [2,1], [2,-1], [1,-2], [-1,-2], [-2,-1], [-2,1], [-1,2]])
+                x, y = prev_pos.to_vec()
+                pos_vec = np.array([x, y])
+                shifted_pos = pos_vec + possible_pos_shift
+                pos_inbound = []
+                for vec_pos in shifted_pos:
+                    min = np.amin(vec_pos)
+                    max = np.amax(vec_pos)
+                    if not np.amin(vec_pos) < 0 and not np.amax(vec_pos) > 7:
+                        pos_inbound.append(vec_pos)
 
+                for row, col in pos_inbound:
+                    pos = vec_to_pos(row, col)
+                    element = self.query_game_board(pos)
+                    if element is None or not (element.get_color() == piece_to_move.get_color()):
+                        legal_moves.append(pos.to_string())
+
+            # if piece.get_kind() == 'B':
+            #     pass
+            # if piece.get_kind() == 'R':
+            #     pass
+            # if piece.get_kind() == 'Q':
+            #     pass
+            # if piece.get_kind() == 'K':
+            #     pass
+
+            is_legal_move = new_pos.to_string() in legal_moves
+        else:
+            is_legal_move = False
+        return is_legal_move
 
 def create_state_board():
     initial_board = dict()
@@ -59,3 +97,10 @@ def initial_piece(pos):
     else:
         return None
     return piece
+
+
+if __name__ == '__main__':
+    test_stateboard = StateBoard()
+    test_pos_prev = Pos('B', 1)
+    test_pos_new = Pos('C', 5)
+    is_legal = test_stateboard.check_move(test_pos_prev, test_pos_new)

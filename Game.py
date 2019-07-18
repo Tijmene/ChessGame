@@ -5,12 +5,13 @@ from Position import vec_to_pos
 
 
 class Game:
-    turn_counter = 0
+    turn_counter: int
     state_board: StateBoard
     gui_board: GUIBoard
 
-    def __init__(self, root, GUI=True):
+    def __init__(self, root, turn_counter=0, GUI=True):
         self.state_board = StateBoard()
+        self.turn_counter = turn_counter
         if GUI:
             self.gui_board = GUIBoard(root, self.state_board, self.turn_counter)
 
