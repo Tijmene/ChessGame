@@ -6,14 +6,16 @@ from Position import vec_to_pos
 
 class GUIBoard(tk.Frame):
     def __init__(self, parent, state_board, turn_counter, rows=8, columns=8, size=32, piece_scale=0.7,
-                 color_white="white", color_black="gray63", color_selected_square="gold", color_target_square="khaki1"):
+                 color_white="white", color_black="gray63", color_selected_square="gold",
+                 color_target_hit="orange red", color_target_square="khaki1"):
         self.rows = rows                    # Amount of rows that the board has
         self.columns = columns              # Amount of columns that the board has
         self.size = size                    # Size of a square in pixels
         self.color1 = color_white           # Color of the "White" tiles
         self.color2 = color_black           # Color of the "Black tiles
         self.color3 = color_selected_square # Color of the tile that is selected
-        self.color4 = color_target_square   # Color of the target square
+        self.color4 = color_target_hit      # Color of the target square
+        self.color5 = color_target_square   # Color of the target square if it has a enemy piece on it
         self.pieces = {}                    # Dictionary that will contain the name of the pieces with their location
         self.selected_square = None         # Position of the Square that is currently selected
         self.piece_size = int(self.size * piece_scale)    # Size of the pieces on the chessboard
@@ -101,8 +103,10 @@ class GUIBoard(tk.Frame):
                 y1 = (row * self.size)
                 x2 = x1 + self.size
                 y2 = y1 + self.size
-
-                self.canvas.create_oval(x1, y1, x2, y2, outline="black", fill=self.color4, tags="square_target")
+                if self.state_board.query_game_board(move) is not None:
+                    self.canvas.create_oval(x1, y1, x2, y2, outline="black", fill=self.color4, tags="square_target")
+                else:
+                    self.canvas.create_oval(x1, y1, x2, y2, outline="black", fill=self.color5, tags="square_target")
 
             self.canvas.tag_raise("piece")
 
