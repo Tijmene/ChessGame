@@ -54,14 +54,33 @@ class StateBoard:
 
             # if piece.get_kind() == 'B':
             #     pass
-            # if piece.get_kind() == 'R':
-            #     pass
+
+            if piece_to_move.get_kind() == 'R':
+                max_range = [range(0, 8)]
+                x, y = pos.to_vec()
+                pos_vec = np.array([x, y])
+                for i in max_range:
+                    shifted_pos = pos_vec + np.array([i, 0])
+                    for row, col in shifted_pos:
+                        pos = vec_to_pos(row,col)
+                        element = self.query_game_board(pos)
+                        if element is None or not (element.get_color() == piece_to_move.get_color()):
+                            legal_moves.append(pos)
+                        else:
+                            element is (element.get_color() == piece_to_move.get_color())
+                            break
+
+
+                for vec_pos in shifted_pos:
+                        if not np.amin(vec_pos) < 0 and not np.amax(vec_pos) > 7:
+                            pos_inbound.append(vec_pos)
+
             # if piece.get_kind() == 'Q':
             #     pass
             # if piece.get_kind() == 'K':
             #     pass
 
-        return legal_moves
+        # return legal_moves
 
     def check_move(self, prev_pos, new_pos):
         legal_moves_string = []
