@@ -56,31 +56,39 @@ class StateBoard:
             #     pass
 
             if piece_to_move.get_kind() == 'R':
-                max_range = [range(0, 8)]
                 x, y = pos.to_vec()
                 pos_vec = np.array([x, y])
-                for i in max_range:
-                    shifted_pos = pos_vec + np.array([i, 0])
-                    for row, col in shifted_pos:
-                        pos = vec_to_pos(row,col)
+                for steps in [1, 2, 3, 4, 5, 6, 7]:
+                    minus_shifted_rank = pos_vec - np.array([steps, 0])
+                    plus_shifted_rank = pos_vec + np.array([steps, 0])
+                    minus_shifted_file = pos_vec - np.array([0, steps])
+                    plus_shifted_file = pos_vec + np.array([0, steps])
+                    if 0 < minus_shifted_rank[0] < 8:
+                        pos = vec_to_pos(minus_shifted_rank[0], minus_shifted_rank[1])
                         element = self.query_game_board(pos)
-                        if element is None or not (element.get_color() == piece_to_move.get_color()):
+                        if element is None:
                             legal_moves.append(pos)
-                        else:
-                            element is (element.get_color() == piece_to_move.get_color())
-                            break
+                            continue
+                        elif element.get_color() != piece_to_move.get_color():
+                            legal_moves.append(pos)
+                        elif element.get_color() == piece_to_move.get_color():
+                            if 0 < plus_shifted_file[1] < 8:
+                                pos = vec_to_pos(plus_shifted_file[0], plus_shifted_file[1])
+                                element = self.query_game_board(pos)
+                                if element is None:
+                                    legal_moves.append(pos)
+                                    continue
+                                elif element.get_color() != piece_to_move.get_color():
+                                    legal_moves.append(pos)
 
 
-                for vec_pos in shifted_pos:
-                        if not np.amin(vec_pos) < 0 and not np.amax(vec_pos) > 7:
-                            pos_inbound.append(vec_pos)
 
             # if piece.get_kind() == 'Q':
             #     pass
             # if piece.get_kind() == 'K':
             #     pass
 
-        # return legal_moves
+        return legal_moves
 
     def check_move(self, prev_pos, new_pos):
         legal_moves_string = []
@@ -126,6 +134,6 @@ def initial_piece(pos):
 
 if __name__ == '__main__':
     test_stateboard = StateBoard()
-    test_pos_prev = Pos('B', 1)
-    test_pos_new = Pos('C', 5)
+    test_pos_prev = Pos('A', 1)
+    test_pos_new = Pos('A', 5)
     is_legal = test_stateboard.check_move(test_pos_prev, test_pos_new)
