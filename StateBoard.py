@@ -114,10 +114,24 @@ class StateBoard:
                         else:
                             plus_file_bool = False
 
-            # if piece.get_kind() == 'Q':
+            # if piece_to_move.get_kind() == 'Q':
             #     pass
-            # if piece.get_kind() == 'K':
-            #     pass
+
+            if piece_to_move.get_kind() == 'K':
+                x, y = pos.to_vec()
+                pos_vec = np.array([x, y])
+                possible_pos_shift = np.array([[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]])
+                shifted_pos = pos_vec + possible_pos_shift
+                pos_inbound = []
+                for vec_pos in shifted_pos:
+                    if not np.amin(vec_pos) < 0 and not np.amax(vec_pos) > 7:
+                        pos_inbound.append(vec_pos)
+
+                for row, col in pos_inbound:
+                    pos = vec_to_pos(row, col)
+                    element = self.query_game_board(pos)
+                    if element is None or not (element.get_color() == piece_to_move.get_color()):
+                        legal_moves.append(pos)
 
         return legal_moves
 
