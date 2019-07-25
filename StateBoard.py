@@ -68,20 +68,38 @@ class StateBoard:
                         element = self.query_game_board(pos)
                         if element is None:
                             legal_moves.append(pos)
-                            continue
+                            pass
                         elif element.get_color() != piece_to_move.get_color():
                             legal_moves.append(pos)
+                        else:
+                            pass
+                    if 0 < plus_shifted_rank[0] < 8:
+                        pos = vec_to_pos(plus_shifted_rank[0], plus_shifted_rank[1])
+                        element = self.query_game_board(pos)
+                        if element is None:
+                            legal_moves.append(pos)
+                        elif element.get_color() != piece_to_move.get_color():
+                            legal_moves.append(pos)
+                        else:
+                            pass
+                    if 0 < minus_shifted_file[1] < 8:
+                        pos = vec_to_pos(minus_shifted_file[0], minus_shifted_file[1])
+                        element = self.query_game_board(pos)
+                        if element is None:
+                            legal_moves.append(pos)
+                        if element.get_color() == piece_to_move.get_color():
+                            legal_moves.append(pos)
+                        else:
+                            pass
+                    if 0 < plus_shifted_file[1] < 8:
+                        pos = vec_to_pos(plus_shifted_file[0], plus_shifted_file[1])
+                        element = self.query_game_board(pos)
+                        if element is None:
+                            legal_moves.append(pos)
                         elif element.get_color() == piece_to_move.get_color():
-                            if 0 < plus_shifted_file[1] < 8:
-                                pos = vec_to_pos(plus_shifted_file[0], plus_shifted_file[1])
-                                element = self.query_game_board(pos)
-                                if element is None:
-                                    legal_moves.append(pos)
-                                    continue
-                                elif element.get_color() != piece_to_move.get_color():
-                                    legal_moves.append(pos)
-
-
+                            legal_moves.append(pos)
+                        else:
+                            pass
 
             # if piece.get_kind() == 'Q':
             #     pass
