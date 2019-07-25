@@ -5,7 +5,7 @@ from PIL import Image
 from Position import vec_to_pos
 
 class GUIBoard(tk.Frame):
-    def __init__(self, parent, state_board, turn_counter, rows=8, columns=8, size=32, piece_scale=0.7,
+    def __init__(self, parent, state_board, turn_counter, rows=8, columns=8, size=32, piece_scale=0.7, hit_scale=0.1,
                  color_white="white", color_black="gray63", color_selected_square="gold",
                  color_target_hit="orange red", color_target_square="khaki1"):
         self.rows = rows                    # Amount of rows that the board has
@@ -19,6 +19,7 @@ class GUIBoard(tk.Frame):
         self.pieces = {}                    # Dictionary that will contain the name of the pieces with their location
         self.selected_square = None         # Position of the Square that is currently selected
         self.piece_size = int(self.size * piece_scale)    # Size of the pieces on the chessboard
+        self.hit_scale = hit_scale          # Scale the hit circle
         self.state_board = state_board      # State of the board
         self.turn_counter = turn_counter    # Turn counter that keeps track of the turns
         self.piece_to_move = None           # Variable that stores a piece to potentially move it with the next click
@@ -99,10 +100,10 @@ class GUIBoard(tk.Frame):
             legal_moves = self.state_board.get_legal_moves(new_pos)
             for move in legal_moves:
                 row, col = move.to_vec()
-                x1 = (col * self.size)
-                y1 = (row * self.size)
-                x2 = x1 + self.size
-                y2 = y1 + self.size
+                x1 = (col * self.size) + self.size * self.hit_scale
+                y1 = (row * self.size) + self.size * self.hit_scale
+                x2 = x1 + self.size - self.size * (2 * self.hit_scale)
+                y2 = y1 + self.size - self.size * (2 * self.hit_scale)
                 if self.state_board.query_game_board(move) is not None:
                     self.canvas.create_oval(x1, y1, x2, y2, outline="black", fill=self.color4, tags="square_target")
                 else:
