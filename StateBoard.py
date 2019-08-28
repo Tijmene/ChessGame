@@ -86,67 +86,53 @@ class StateBoard:
                     if element is None or not (element.get_color() == piece_to_move.get_color()):
                         legal_moves.append(pos)
 
-            # if piece.get_kind() == 'B':
-            #     pass
+            if piece_to_move.get_kind() == 'B':
+                x, y = pos.to_vec()
+                pos_vec = np.array([x, y])
+                plus_file_plus_rank_bool = True
+                plus_file_minus_rank_bool = True
+                minus_file_plus_rank_bool = True
+                minus_file_minus_rank_bool = True
+                bishop_bool = [plus_file_plus_rank_bool, plus_file_minus_rank_bool, minus_file_plus_rank_bool, minus_file_minus_rank_bool]
+
+                for steps in [1, 2, 3, 4, 5, 6, 7]:
+                    all_directions = pos_vec + np.array([[steps, steps], [steps, -steps], [-steps, steps], [-steps, -steps]])
+                    for directions in [0, 1, 2, 3]:
+                        if 0 <= all_directions[directions, 0] < 8 and 0 <= all_directions[directions, 1] < 8 and bishop_bool[directions]:
+                            pos = vec_to_pos(all_directions[directions, 0], all_directions[directions, 1])
+                            element = self.query_game_board(pos)
+                            if element is None and bishop_bool[directions]:
+                                legal_moves.append(pos)
+                                pass
+                            elif element.get_color() != piece_to_move.get_color():
+                                legal_moves.append(pos)
+                                bishop_bool[directions] = False
+                            else:
+                                bishop_bool[directions] = False
 
             if piece_to_move.get_kind() == 'R':
                 x, y = pos.to_vec()
                 pos_vec = np.array([x, y])
-                minus_rank_bool = True
                 plus_rank_bool = True
-                minus_file_bool = True
+                minus_rank_bool = True
                 plus_file_bool = True
+                minus_file_bool = True
+                rook_bool = [minus_rank_bool, plus_rank_bool, minus_file_bool, plus_file_bool]
 
                 for steps in [1, 2, 3, 4, 5, 6, 7]:
-                    minus_shifted_rank = pos_vec - np.array([steps, 0])
-                    plus_shifted_rank = pos_vec + np.array([steps, 0])
-                    minus_shifted_file = pos_vec - np.array([0, steps])
-                    plus_shifted_file = pos_vec + np.array([0, steps])
-
-                    if 0 <= minus_shifted_rank[0] < 8 and minus_rank_bool:
-                        pos = vec_to_pos(minus_shifted_rank[0], minus_shifted_rank[1])
-                        element = self.query_game_board(pos)
-                        if element is None:
-                            legal_moves.append(pos)
-                            pass
-                        elif element.get_color() != piece_to_move.get_color():
-                            legal_moves.append(pos)
-                            minus_rank_bool = False
-                        else:
-                            minus_rank_bool = False
-
-                    if 0 <= plus_shifted_rank[0] < 8 and plus_rank_bool:
-                        pos = vec_to_pos(plus_shifted_rank[0], plus_shifted_rank[1])
-                        element = self.query_game_board(pos)
-                        if element is None:
-                            legal_moves.append(pos)
-                        elif element.get_color() != piece_to_move.get_color():
-                            legal_moves.append(pos)
-                            plus_rank_bool = False
-                        else:
-                            plus_rank_bool = False
-
-                    if 0 <= minus_shifted_file[1] < 8 and minus_file_bool:
-                        pos = vec_to_pos(minus_shifted_file[0], minus_shifted_file[1])
-                        element = self.query_game_board(pos)
-                        if element is None:
-                            legal_moves.append(pos)
-                        elif element.get_color() != piece_to_move.get_color():
-                            legal_moves.append(pos)
-                            minus_file_bool = False
-                        else:
-                            minus_file_bool = False
-
-                    if 0 <= plus_shifted_file[1] < 8 and plus_file_bool:
-                        pos = vec_to_pos(plus_shifted_file[0], plus_shifted_file[1])
-                        element = self.query_game_board(pos)
-                        if element is None:
-                            legal_moves.append(pos)
-                        elif element.get_color() != piece_to_move.get_color():
-                            legal_moves.append(pos)
-                            plus_file_bool = False
-                        else:
-                            plus_file_bool = False
+                    all_directions = pos_vec + np.array([[steps, 0], [-steps, 0], [0, steps], [0, -steps]])
+                    for directions in [0, 1, 2, 3]:
+                        if 0 <= all_directions[directions, 0] < 8 and 0 <= all_directions[directions, 1] < 8 and rook_bool[directions]:
+                            pos = vec_to_pos(all_directions[directions, 0], all_directions[directions, 1])
+                            element = self.query_game_board(pos)
+                            if element is None:
+                                legal_moves.append(pos)
+                                pass
+                            elif element.get_color() != piece_to_move.get_color():
+                                legal_moves.append(pos)
+                                rook_bool[directions] = False
+                            else:
+                                rook_bool[directions] = False
 
             # if piece_to_move.get_kind() == 'Q':
             #     pass
