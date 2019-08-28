@@ -46,9 +46,9 @@ class GUIBoard(tk.Frame):
     def place_piece(self, name, pos):
         """Place a piece at the given row/column"""
         self.pieces[name] = pos
-        row, col = pos.to_vec()
-        y0 = (row * self.size) + int(self.size / 2)
-        x0 = (col * self.size) + int(self.size / 2)
+        vec_x, vec_y = pos.to_vec()
+        x0 = (vec_x * self.size) + int(self.size / 2)
+        y0 = (vec_y * self.size) + int(self.size / 2)
         self.canvas.coords(name, x0, y0)
 
     def remove_piece(self, name):
@@ -73,14 +73,14 @@ class GUIBoard(tk.Frame):
     def interact_mouse(self, event):
         """A square is highlighted if: It has a piece on it AND it is the turn of the players the piece belongs to.
         The piece on the highlighted square will be moved if a valid target position is selected with the next click"""
-        row = event.y//self.size
-        col = event.x//self.size
-        x1 = (col * self.size)
-        y1 = (row * self.size)
+        vec_x = event.x//self.size
+        vec_y = event.y//self.size
+        x1 = (vec_x * self.size)
+        y1 = (vec_y * self.size)
         x2 = x1 + self.size
         y2 = y1 + self.size
 
-        new_pos = vec_to_pos(row, col)
+        new_pos = vec_to_pos(vec_x, vec_y)
         selected_piece = self.state_board.query_game_board(new_pos)
         turn_bool = False
 
@@ -100,8 +100,8 @@ class GUIBoard(tk.Frame):
             legal_moves = self.state_board.get_legal_moves(new_pos)
             for move in legal_moves:
                 row, col = move.to_vec()
-                x1 = (col * self.size) + self.size * self.hit_scale
-                y1 = (row * self.size) + self.size * self.hit_scale
+                x1 = (row * self.size) + self.size * self.hit_scale
+                y1 = (col * self.size) + self.size * self.hit_scale
                 x2 = x1 + self.size - self.size * (2 * self.hit_scale)
                 y2 = y1 + self.size - self.size * (2 * self.hit_scale)
                 if self.state_board.query_game_board(move) is not None:
@@ -146,9 +146,9 @@ class GUIBoard(tk.Frame):
         # Redraw the square that is currently selected
         selected_square = self.selected_square
         if selected_square is not None:
-            row, col = selected_square.to_vec()
-            x1 = (col * self.size)
-            y1 = (row * self.size)
+            vec_x, vec_y = selected_square.to_vec()
+            x1 = (vec_x * self.size)
+            y1 = (vec_y * self.size)
             x2 = x1 + self.size
             y2 = y1 + self.size
             color = self.color3

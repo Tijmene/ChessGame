@@ -27,6 +27,14 @@ class StateBoard:
         self.state_board[prev_pos_str] = None
         self.state_board[new_pos_str] = piece
 
+    def evaluate_state(self, color):
+        score = 0
+        for piece in self.state_board.values():
+            if piece is not None and piece.get_color() == color:
+                score += piece.get_points()
+        return score
+
+
     # TODO At the moment this is a dummy function, this function should use the stateboard to check if a proposed move
     #  is legal (return True) or illegal (return False)
     def get_legal_moves(self, pos):
@@ -34,8 +42,34 @@ class StateBoard:
         piece_to_move = self.state_board[pos_string]
         legal_moves = []
         if piece_to_move is not None:
+            # Pawn code is incorrect but quick and dirty for testing purposes
             if piece_to_move.get_kind() == 'P':
-                pass
+                if piece_to_move.get_color() == 'B':
+                    x, y = pos.to_vec()
+                    if y == 1:
+                        y2 = y + 2
+                        move_pos2 = vec_to_pos(x, y2)
+                        element = self.query_game_board(move_pos2)
+                        if element is None:
+                            legal_moves.append(move_pos2)
+                    y1 = y + 1
+                    move_pos = vec_to_pos(x, y1)
+                else:
+                    x, y = pos.to_vec()
+                    if y == 6:
+                        y2 = y - 2
+                        move_pos2 = vec_to_pos(x, y2)
+                        element = self.query_game_board(move_pos2)
+                        if element is None:
+                            legal_moves.append(move_pos2)
+                        legal_moves.append(move_pos2)
+                    y1 = y - 1
+                    move_pos = vec_to_pos(x, y1)
+
+                element = self.query_game_board(move_pos)
+                if element is None:
+                    legal_moves.append(move_pos)
+
             if piece_to_move.get_kind() == 'N':
                 possible_pos_shift = np.array([[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]])
                 x, y = pos.to_vec()

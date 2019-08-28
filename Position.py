@@ -19,13 +19,13 @@ class Position:
 
     def to_vec(self):
         file = self.get_file()
-        vec_rank = 8 - (self.get_rank())
-        vec_file = ord(file) - 65
-        return vec_rank, vec_file
+        vec_x = ord(file) - 65
+        vec_y = 8 - (self.get_rank())
+        return vec_x, vec_y
 
 
-def vec_to_pos(row, col):
-    file = chr(col + 65)
-    rank = 8 - row
+def vec_to_pos(vec_x, vec_y):
+    file = chr(vec_x + 65)
+    rank = 8 - vec_y
     pos = Position(file, rank)
     return pos
