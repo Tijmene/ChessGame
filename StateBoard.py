@@ -134,8 +134,13 @@ class StateBoard:
                             else:
                                 rook_bool[directions] = False
 
-            # if piece_to_move.get_kind() == 'Q':
-            #     pass
+            if piece_to_move.get_kind() == 'Q':
+                x, y = pos.to_vec()
+                pos_vec = np.array([x, y])
+                for file, rank in ([1, 2, 3, 4, 5, 6, 7]):
+                    possible_pos_shift = np.array([file, rank], [file, -rank], [-file, -rank], [-file, rank], [file, 0], [-file, 0], [0, rank], [0, -rank])
+                    shifted_pos = pos_vec + possible_pos_shift
+
 
             if piece_to_move.get_kind() == 'K':
                 x, y = pos.to_vec()
@@ -199,6 +204,6 @@ def initial_piece(pos):
 
 if __name__ == '__main__':
     test_stateboard = StateBoard()
-    test_pos_prev = Pos('A', 1)
-    test_pos_new = Pos('A', 5)
+    test_pos_prev = Pos('D', 1)
+    test_pos_new = Pos('D', 5)
     is_legal = test_stateboard.check_move(test_pos_prev, test_pos_new)
