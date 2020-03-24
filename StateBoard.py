@@ -134,12 +134,12 @@ class StateBoard:
                             else:
                                 rook_bool[directions] = False
 
-            if piece_to_move.get_kind() == 'Q':
-                x, y = pos.to_vec()
-                pos_vec = np.array([x, y])
-                for file, rank in ([1, 2, 3, 4, 5, 6, 7]):
-                    possible_pos_shift = np.array([file, rank], [file, -rank], [-file, -rank], [-file, rank], [file, 0], [-file, 0], [0, rank], [0, -rank])
-                    shifted_pos = pos_vec + possible_pos_shift
+            # if piece_to_move.get_kind() == 'Q':
+            #     x, y = pos.to_vec()
+            #     pos_vec = np.array([x, y])
+            #     for file, rank in ([1, 2, 3, 4, 5, 6, 7]):
+            #         possible_pos_shift = np.array([file, rank], [file, -rank], [-file, -rank], [-file, rank], [file, 0], [-file, 0], [0, rank], [0, -rank])
+            #         shifted_pos = pos_vec + possible_pos_shift
 
 
             if piece_to_move.get_kind() == 'K':
