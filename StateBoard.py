@@ -41,11 +41,12 @@ class StateBoard:
         pos_string = pos.to_string()
         piece_to_move = self.state_board[pos_string]
         legal_moves = []
+        x, y = pos.to_vec()
+
         if piece_to_move is not None:
             # Pawn code is incorrect but quick and dirty for testing purposes
             if piece_to_move.get_kind() == 'P':
                 if piece_to_move.get_color() == 'B':
-                    x, y = pos.to_vec()
                     if y == 1:
                         y2 = y + 2
                         move_pos2 = vec_to_pos(x, y2)
@@ -54,8 +55,19 @@ class StateBoard:
                             legal_moves.append(move_pos2)
                     y1 = y + 1
                     move_pos = vec_to_pos(x, y1)
+                    for i in [-1, 1]:
+                        if 0 <= x + i < 8:
+                            move_pos_capture = vec_to_pos((x + i), y1)
+                            element = self.query_game_board(move_pos_capture)
+                            if element is not None and not (element.get_color() == piece_to_move.get_color()):
+                                legal_moves.append(move_pos_capture)
+                    # TODO: purpose of the next part is to exchange the pawn when end of the board is reached. This is
+                    #  not possible yet.
+                    if y1 == 7:
+                        piece_to_move = Piece('B', pos, 'Q', pos.to_string())
+
                 else:
-                    x, y = pos.to_vec()
+                    # x, y = pos.to_vec()
                     if y == 6:
                         y2 = y - 2
                         move_pos2 = vec_to_pos(x, y2)
@@ -65,14 +77,22 @@ class StateBoard:
                         legal_moves.append(move_pos2)
                     y1 = y - 1
                     move_pos = vec_to_pos(x, y1)
+                    for i in [-1, 1]:
+                        if 0 <= x + i < 8:
+                            move_pos_capture = vec_to_pos((x + i), (y - 1))
+                            element = self.query_game_board(move_pos_capture)
+                            if element is not None and not (element.get_color() == piece_to_move.get_color()):
+                                legal_moves.append(move_pos_capture)
 
                 element = self.query_game_board(move_pos)
                 if element is None:
                     legal_moves.append(move_pos)
 
+
+
             if piece_to_move.get_kind() == 'N':
                 possible_pos_shift = np.array([[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]])
-                x, y = pos.to_vec()
+                # x, y = pos.to_vec()
                 pos_vec = np.array([x, y])
                 shifted_pos = pos_vec + possible_pos_shift
                 pos_inbound = []
@@ -87,7 +107,7 @@ class StateBoard:
                         legal_moves.append(pos)
 
             if piece_to_move.get_kind() == 'B':
-                x, y = pos.to_vec()
+                # x, y = pos.to_vec()
                 pos_vec = np.array([x, y])
                 plus_file_plus_rank_bool = True
                 plus_file_minus_rank_bool = True
@@ -111,7 +131,7 @@ class StateBoard:
                                 bishop_bool[directions] = False
 
             if piece_to_move.get_kind() == 'R':
-                x, y = pos.to_vec()
+                # x, y = pos.to_vec()
                 pos_vec = np.array([x, y])
                 plus_rank_bool = True
                 minus_rank_bool = True
@@ -143,7 +163,7 @@ class StateBoard:
 
 
             if piece_to_move.get_kind() == 'K':
-                x, y = pos.to_vec()
+                # x, y = pos.to_vec()
                 pos_vec = np.array([x, y])
                 possible_pos_shift = np.array([[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]])
                 shifted_pos = pos_vec + possible_pos_shift
@@ -170,6 +190,7 @@ class StateBoard:
             return True
         else:
             return False
+
 
 def create_state_board():
     initial_board = dict()

@@ -65,10 +65,3 @@ def construct_possible_state_tree(depth, state, turn_count):
                     sub_worlds = construct_possible_state_tree(depth - 1, state, turn_count + 1)
                     possible_future_states.append((state_copy, sub_worlds))
         return possible_future_states
-
-
-
-
-
-
-
