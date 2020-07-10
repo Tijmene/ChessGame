@@ -1,4 +1,4 @@
-import Position
+from Position import Position as Pos, vec_to_pos
 
 
 class Piece:
@@ -50,3 +50,6 @@ def set_one_hot(kind, color):
         n += 6
     n += index_dict[kind]
     return [0] * n + [1] + [0] * (11 - n)
+
+
+

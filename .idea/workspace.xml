@@ -1,108 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="596e7364-29a6-41da-8a48-72ce0cf9512d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/ChessGame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ChessGame.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessMainFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChessMainFile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Piece.py" beforeDir="false" afterPath="$PROJECT_DIR$/Piece.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBoard.py" beforeDir="false" afterPath="$PROJECT_DIR$/StateBoard.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ChessMainFile.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#36#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Piece.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Game.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1139">
-              <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GUIBoard.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1258">
-              <caret line="74" column="73" selection-start-line="74" selection-start-column="73" selection-end-line="74" selection-end-column="73" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ML.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-279">
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ChessGameElements.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Position.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StateBoard.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2626">
-              <caret line="55" column="30" lean-forward="true" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
-              <folding>
-                <element signature="e#0#48#0" expanded="true" />
-                <marker date="1590354355390" expanded="true" signature="7168:7584" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -121,70 +49,31 @@
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/GUI.py" />
-        <option value="$PROJECT_DIR$/ChessGameElements.py" />
-        <option value="$PROJECT_DIR$/Position.py" />
-        <option value="$PROJECT_DIR$/GUIBoard.py" />
-        <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/ChessMainFile.py" />
-        <option value="$PROJECT_DIR$/Game.py" />
-        <option value="$PROJECT_DIR$/StateBoard.py" />
-        <option value="$PROJECT_DIR$/Piece.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="198" />
-    <option name="y" value="-8" />
-    <option name="width" value="1057" />
-    <option name="height" value="867" />
-  </component>
+  <component name="ProjectId" id="1diX68p7jPET60FivZ9L2OvpEOa" />
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="ChessGame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ChessGame" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="ChessGame" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="ChessGame" />
+      </console-settings>
+    </option>
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\ChessGame\icons" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.ChessMainFile">
     <configuration name="ChessGameElements" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -215,7 +104,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Sijm\AppData\Local\Programs\Python\Python37-32\python.exe" />
+      <option name="SDK_HOME" value="C:\Users\User\Anaconda\envs\ChessGame\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -293,16 +182,16 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.ChessGameElements" />
       <item itemvalue="Python.ChessMainFile" />
+      <item itemvalue="Python.GUIBoard" />
       <item itemvalue="Python.Game" />
       <item itemvalue="Python.StateBoard" />
-      <item itemvalue="Python.GUIBoard" />
-      <item itemvalue="Python.ChessGameElements" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.ChessMainFile" />
         <item itemvalue="Python.ChessGameElements" />
+        <item itemvalue="Python.ChessMainFile" />
         <item itemvalue="Python.StateBoard" />
         <item itemvalue="Python.GUIBoard" />
         <item itemvalue="Python.Game" />
@@ -360,32 +249,16 @@
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13560411" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49894625" weight="0.32827735" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49421594" visible="true" weight="0.33243608" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49209693" weight="0.33916554" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49947312" weight="0.32936078" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49947312" weight="0.32827735" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32719395" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50578403" side_tool="true" weight="0.2678331" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.4963119" weight="0.3270525" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="R Graphics" order="3" />
-      <window_info anchor="right" id="R Packages" order="4" />
-    </layout>
-  </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="RECENT_FILTERS">
       <map>
         <entry key="Branch">
@@ -400,6 +273,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Via the GUI you can now select squares, only squares that have pieces on them can be selected." />
@@ -407,17 +281,65 @@
     <MESSAGE value="The GUI can now be interacted with. At the moment, any move can be made and illegal moves are not filtered out (this is still ToDo by implementing the function in stateBoard called check_move) The GUI does take into acount whose turn it is." />
     <option name="LAST_COMMIT_MESSAGE" value="The GUI can now be interacted with. At the moment, any move can be made and illegal moves are not filtered out (this is still ToDo by implementing the function in stateBoard called check_move) The GUI does take into acount whose turn it is." />
   </component>
+  <component name="WindowStateProjectService">
+    <state x="345" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1594409590848">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="2014" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1592909515662" />
+    <state x="345" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1600.860@0.0.1600.860" timestamp="1594409590848" />
+    <state x="2339" y="275" key="FileChooserDialogImpl" timestamp="1593086117745">
+      <screen x="1600" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2339" y="275" key="FileChooserDialogImpl/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1593086117745" />
+    <state width="1579" height="158" key="GridCell.Tab.0.bottom" timestamp="1594415424704">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="158" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1594415424704" />
+    <state width="1579" height="158" key="GridCell.Tab.0.center" timestamp="1594415424704">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="158" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1594415424704" />
+    <state width="1579" height="158" key="GridCell.Tab.0.left" timestamp="1594415424704">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="158" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1594415424704" />
+    <state width="1579" height="158" key="GridCell.Tab.0.right" timestamp="1594415424704">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="158" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1594415424704" />
+    <state width="1579" height="229" key="GridCell.Tab.1.bottom" timestamp="1594410615045">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="229" key="GridCell.Tab.1.bottom/0.0.1600.860@0.0.1600.860" timestamp="1594410615045" />
+    <state width="1579" height="229" key="GridCell.Tab.1.center" timestamp="1594410615045">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="229" key="GridCell.Tab.1.center/0.0.1600.860@0.0.1600.860" timestamp="1594410615045" />
+    <state width="1579" height="229" key="GridCell.Tab.1.left" timestamp="1594410615045">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="229" key="GridCell.Tab.1.left/0.0.1600.860@0.0.1600.860" timestamp="1594410615045" />
+    <state width="1579" height="229" key="GridCell.Tab.1.right" timestamp="1594410615045">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1579" height="229" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1594410615045" />
+    <state x="384" y="136" key="SettingsEditor" timestamp="1594413115152">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="2061" y="165" key="SettingsEditor/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1592909651921" />
+    <state x="384" y="136" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1594413115152" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/StateBoard.py</url>
-          <line>158</line>
+          <line>161</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/StateBoard.py</url>
-          <line>159</line>
+          <line>162</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
@@ -429,87 +351,5 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test.py" />
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/_methods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="31" column="61" lean-forward="true" selection-start-line="31" selection-start-column="61" selection-end-line="31" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.sh" />
-    <entry file="file://$PROJECT_DIR$/Position.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ChessGameElements.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GUIBoard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="74" column="73" selection-start-line="74" selection-start-column="73" selection-end-line="74" selection-end-column="73" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1139">
-          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ML.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-279">
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ChessMainFile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StateBoard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2626">
-          <caret line="55" column="30" lean-forward="true" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#48#0" expanded="true" />
-            <marker date="1590354355390" expanded="true" signature="7168:7584" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Piece.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>

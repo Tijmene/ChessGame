@@ -47,13 +47,9 @@ class StateBoard:
             # Pawn code is incorrect but quick and dirty for testing purposes
             if piece_to_move.get_kind() == 'P':
                 if piece_to_move.get_color() == 'B':
-                    if y == 1:
-                        y2 = y + 2
-                        move_pos2 = vec_to_pos(x, y2)
-                        element = self.query_game_board(move_pos2)
-                        if element is None:
-                            legal_moves.append(move_pos2)
                     y1 = y + 1
+                    if y1 >= 7:
+                        pass
                     move_pos = vec_to_pos(x, y1)
                     for i in [-1, 1]:
                         if 0 <= x + i < 8:
@@ -61,10 +57,17 @@ class StateBoard:
                             element = self.query_game_board(move_pos_capture)
                             if element is not None and not (element.get_color() == piece_to_move.get_color()):
                                 legal_moves.append(move_pos_capture)
-                    # TODO: purpose of the next part is to exchange the pawn when end of the board is reached. This is
-                    #  not possible yet.
-                    if y1 == 7:
-                        piece_to_move = Piece('B', pos, 'Q', pos.to_string())
+                    if y == 1:
+                        y2 = y + 2
+                        move_pos2 = vec_to_pos(x, y2)
+                        element = self.query_game_board(move_pos2)
+                        # TODO: purpose of the next part is to exchange the pawn when end of the board is reached. This is
+                        #  not possible yet.
+                        # if y1 == 7:
+                        #     Piece.pawn_to_queen(change_piece_to_move, 'Q')
+                        if element is None:
+                            legal_moves.append(move_pos2)
+
 
                 else:
                     # x, y = pos.to_vec()

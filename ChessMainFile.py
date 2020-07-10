@@ -16,7 +16,6 @@ if __name__ == "__main__":
     # has changed is desirable.
 
     state = game.get_game_state()
-
     start = timeit.default_timer()
     turn_counter = game.get_turn_counter()
     possible_future_states = construct_possible_state_tree(2, state, turn_counter)
