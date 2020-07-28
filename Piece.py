@@ -3,7 +3,7 @@ from Position import Position as Pos, vec_to_pos
 
 class Piece:
     color: chr
-    position: Position
+    position: Pos
     kind: str
     points: int
     name: str
@@ -36,6 +36,11 @@ class Piece:
 
     def get_points(self):
         return self.points
+
+    def pawn_to_queen(self):
+        new_kind = 'Q'
+        self.kind = new_kind.upper()
+        return self.kind
 
 
 def set_points(kind):

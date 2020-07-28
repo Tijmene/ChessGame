@@ -64,7 +64,8 @@ class StateBoard:
                         # TODO: purpose of the next part is to exchange the pawn when end of the board is reached. This is
                         #  not possible yet.
                         # if y1 == 7:
-                        #     Piece.pawn_to_queen(change_piece_to_move, 'Q')
+                        #     Piece.pawn_to_queen(piece_to_move)
+
                         if element is None:
                             legal_moves.append(move_pos2)
 
