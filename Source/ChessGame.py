@@ -1,12 +1,12 @@
-from StateBoard import StateBoard
-from GUIBoard import GUIBoard
+from Source.StateBoard import StateBoard
+from Source.GUIBoard import GUIBoard
 from copy import copy, deepcopy
-import tkinter as tk
-from Position import vec_to_pos
 
 
 class ChessGame:
+    """ The top-level class of this program. This class contains all the elements present in the Game of Chess"""
     turn_counter: int
+    clock: Clock
     state_board: StateBoard
     gui_board: GUIBoard
 
