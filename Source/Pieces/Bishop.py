@@ -1,6 +1,5 @@
 from Source.Pieces.Piece import Piece
-from Source.Pieces.Position import Position as Pos
-from Source.Pieces.Color import Color
+from Source.ChessUtils.Position import Position as Pos
 
 
 class Bishop(Piece):
@@ -11,3 +10,6 @@ class Bishop(Piece):
 
     def get_possible_moves(self) -> [Pos]:  # TODO: Implement
         return
+
+    def get_letter_code(self) -> chr:
+        return "B"

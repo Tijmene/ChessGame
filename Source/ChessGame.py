@@ -1,12 +1,13 @@
 from Source.StateBoard import StateBoard
 from Source.GUIBoard import GUIBoard
+from Source.Clocks.ChessClock import ChessClock
 from copy import copy, deepcopy
 
 
 class ChessGame:
     """ The top-level class of this program. This class contains all the elements present in the Game of Chess"""
     turn_counter: int
-    clock: Clock
+    clock: ChessClock
     state_board: StateBoard
     gui_board: GUIBoard
 

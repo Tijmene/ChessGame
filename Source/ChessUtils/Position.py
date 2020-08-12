@@ -12,11 +12,6 @@ class Position:
     def get_rank(self):
         return self.rank
 
-    def to_string(self):
-        file = self.get_file()
-        rank = self.get_rank()
-        return file + str(rank)
-
     def to_vec(self):
         file = self.get_file()
         vec_x = ord(file) - 65
@@ -24,7 +19,7 @@ class Position:
         return vec_x, vec_y
 
     def __str__(self):
-        return "{file}{rank}".format(file = self.file, rank = self.rank)
+        return "{file}{rank}".format(file=self.file, rank=self.rank)
 
 
 def vec_to_pos(vec_x, vec_y):

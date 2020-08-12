@@ -1,4 +1,4 @@
-from Source.Pieces.Position import Position as Pos
+from Source.ChessUtils.Position import Position as Pos
 from Source.Pieces.Color import Color
 import abc
 
@@ -46,6 +46,16 @@ class Piece:
                                                                 points=self.points,
                                                                 pos=self.position,
                                                                 oneHot=self.oneHotEncoding)
+
+    @abc.abstractmethod
+    def get_letter_code(self) -> chr:
+        return
+
+    def is_white(self) -> bool:
+        return Color.WHITE == self.color
+
+    def is_black(self) -> bool:
+        return Color.BLACK == self.color
 
 
 def generate_one_hot(kind: str, color: Color) -> [int]:
