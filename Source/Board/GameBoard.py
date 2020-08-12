@@ -1,10 +1,13 @@
 from Source.Pieces.Pawn import Pawn
 from Source.ChessUtils.Color import Color
 from Source.ChessUtils.Position import Position as Pos
+from Source.ChessUtils.Move import Move
+from Source.Board.GUIBoard import GUIBoard
 
 
 class GameBoard:
-    square_mapping: dict # A mapping of position strings to chess pieces or empty squares.
+    square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
+    gui: GUIBoard  # The class responsible for creating the Graphical User Interface for the board
 
     def __init__(self):
         """ Creates an empty board which is a mapping of positions in File Rank format """
@@ -51,6 +54,17 @@ class GameBoard:
                 self.square_mapping[pos] = cls(color=Color.BLACK,
                                                start_position=Pos(file, rank),
                                                identifier=pos)
+
+    def move_piece(self, move: Move):
+        piece = self.square_mapping[move.from_pos.__str__()]
+        self.square_mapping[move.to_pos.__str__()] = piece
+        self.square_mapping[move.from_pos.__str__()] = None
+
+    def draw(self):
+        if self.gui is None:
+            self.gui = GUIBoard(self.square_mapping)
+        else:
+            self.gui.update()
 
     def __str__(self):
         files = list(range(65, 73))
