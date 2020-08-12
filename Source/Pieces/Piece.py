@@ -1,5 +1,6 @@
 from Source.ChessUtils.Position import Position as Pos
 from Source.ChessUtils.Color import Color
+from Source.ChessUtils.Move import Move
 import abc
 
 
@@ -9,14 +10,12 @@ class Piece:
     class that inherits from this class"""
     __metaclass__ = abc.ABCMeta     # This declares this class as abstract.
     color: Color                    # An enum class is used to restrict options to those listed in Pieces.Color.
-    position: Pos                   # Position as described by the Position class.
     identifier: str                 # An unique identifier used to track pieces.
     points: int                     # The amount of points this piece is worth.
     oneHotEncoding: [int]           # The oneHotEncoding is used for ML purposes.
 
-    def __init__(self, color: Color, start_position: Pos, identifier: str):
+    def __init__(self, color: Color, identifier: str):
         self.color = color
-        self.position = start_position
         self.identifier = identifier
         self.set_points()
         self.oneHotEncoding = generate_one_hot(self.__class__.__name__, self.color)
@@ -25,27 +24,20 @@ class Piece:
     def set_points(self) -> None:
         return
 
-    def move(self, new_position: Pos) -> bool:
-        """ If the new_position is in the list of possible moves of this piece it is moved and True is returned
-         If the new_position was not in the list of eligible moves the piece is not moved and False is returned"""
-        if new_position in self.get_possible_moves():
-            self.position = new_position
-            return True
-        else:
-            return False
-
     @abc.abstractmethod
-    def get_possible_moves(self) -> [Pos]:
+    def get_possible_moves(self, pos: Pos) -> [Pos]:
+        """ This method retrieves the list of possible moves, only taking into account the moveset of the piece
+        and the dimensions of the board. The other pieces are not taken into account on this level as the piece
+        has not awareness about other pieces around him """
         return
 
     def __str__(self):
         """ Overrides the default str method that convers an object to a string"""
         return "A {color} {type} worth {points} points " \
-               "at {pos} with one hot encoding {oneHot}".format(color=self.color,
-                                                                type=self.__class__.__name__,
-                                                                points=self.points,
-                                                                pos=self.position,
-                                                                oneHot=self.oneHotEncoding)
+               "with one hot encoding {oneHot}".format(color=self.color,
+                                                       type=self.__class__.__name__,
+                                                       points=self.points,
+                                                       oneHot=self.oneHotEncoding)
 
     @abc.abstractmethod
     def get_letter_code(self) -> chr:

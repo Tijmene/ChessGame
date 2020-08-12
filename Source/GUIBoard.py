@@ -2,7 +2,8 @@ import tkinter as tk
 import PIL.Image
 import PIL.ImageTk
 from PIL import Image
-from Position import vec_to_pos
+from Source.ChessUtils.Position import vec_to_pos
+
 
 class GUIBoard(tk.Frame):
     def __init__(self, parent, state_board, turn_counter, rows=8, columns=8, size=32, piece_scale=0.7, hit_scale=0.1,

@@ -13,8 +13,7 @@ class Position:
         return self.rank
 
     def to_vec(self):
-        file = self.get_file()
-        vec_x = ord(file) - 65
+        vec_x = ord(self.file) - 65
         vec_y = 8 - (self.get_rank())
         return vec_x, vec_y
 

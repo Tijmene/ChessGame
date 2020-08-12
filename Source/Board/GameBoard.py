@@ -1,13 +1,19 @@
 from Source.Pieces.Pawn import Pawn
-from Source.ChessUtils.Color import Color
+from Source.Pieces.Bishop import Bishop
+from Source.Pieces.King import King
+from Source.Pieces.Queen import Queen
+from Source.Pieces.Rook import Rook
+from Source.Pieces.Knight import Knight
+
 from Source.ChessUtils.Position import Position as Pos
+from Source.ChessUtils.Color import Color
 from Source.ChessUtils.Move import Move
 from Source.Board.GUIBoard import GUIBoard
 
 
 class GameBoard:
     square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
-    gui: GUIBoard  # The class responsible for creating the Graphical User Interface for the board
+    gui: GUIBoard = None  # The class responsible for creating the Graphical User Interface for the board
 
     def __init__(self):
         """ Creates an empty board which is a mapping of positions in File Rank format """
@@ -19,7 +25,7 @@ class GameBoard:
         self.square_mapping = empty_board
 
     def generate_default_setup(self):
-        piece_type = {
+        piece_type_dict = {
             **dict.fromkeys(['A', 'H'], 'Rook'),
             **dict.fromkeys(['B', 'G'], 'Knight'),
             **dict.fromkeys(['C', 'F'], 'Bishop'),
@@ -32,30 +38,27 @@ class GameBoard:
             rank = pos[1]
 
             if rank == "1":
-                piece_name = piece_type[file]
+                piece_name = piece_type_dict[file]
                 cls = globals()[piece_name]
                 self.square_mapping[pos] = cls(color=Color.WHITE,
-                                               start_position=Pos(file, rank),
                                                identifier=pos)
 
             elif rank == "2":
                 self.square_mapping[pos] = Pawn(color=Color.WHITE,
-                                                start_position=Pos(file, rank),
                                                 identifier=pos)
 
             elif rank == "7":
                 self.square_mapping[pos] = Pawn(color=Color.BLACK,
-                                                start_position=Pos(file, rank),
                                                 identifier=pos)
 
             elif rank == "8":
-                piece_name = piece_type[file]
+                piece_name = piece_type_dict[file]
                 cls = globals()[piece_name]
                 self.square_mapping[pos] = cls(color=Color.BLACK,
-                                               start_position=Pos(file, rank),
                                                identifier=pos)
 
     def move_piece(self, move: Move):
+        """ Updates the position of a piece on the board """
         piece = self.square_mapping[move.from_pos.__str__()]
         self.square_mapping[move.to_pos.__str__()] = piece
         self.square_mapping[move.from_pos.__str__()] = None
@@ -67,8 +70,8 @@ class GameBoard:
             self.gui.update()
 
     def __str__(self):
+        """ Converts the board to the string representation of the board """
         files = list(range(65, 73))
-        # files.reverse()
         ranks = list(range(1, 9))
         ranks.reverse()
 
@@ -105,4 +108,6 @@ class GameBoard:
 if __name__ == "__main__":
     board = GameBoard()
     board.generate_default_setup()
+    board.move_piece(Move(Pos("E", 2), Pos("E", 4)))
+    board.move_piece(Move(Pos("B", 8), Pos("C", 6)))
     print(board)
