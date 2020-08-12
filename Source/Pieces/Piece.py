@@ -1,5 +1,5 @@
-from Pieces.Position import Position as Pos
-from Pieces.Color import Color
+from Source.Pieces.Position import Position as Pos
+from Source.Pieces.Color import Color
 import abc
 
 
@@ -18,40 +18,37 @@ class Piece:
         self.color = color
         self.position = start_position
         self.identifier = identifier
-        self.setPoints()
-        self.setOneHotEncoding()
+        self.set_points()
+        self.oneHotEncoding = generate_one_hot(self.__class__.__name__, self.color)
 
     @abc.abstractmethod
-    def setPoints(self) -> None:
-        return
-
-    def setOneHotEncoding(self) -> None:
-        """ Takes the class name and the color to generate the one hot encoding using a helper function"""
-        self.oneHotEncoding = generateOneHot(self.__class__.__name__, self.color)
+    def set_points(self) -> None:
         return
 
     def move(self, new_position: Pos) -> bool:
         """ If the new_position is in the list of possible moves of this piece it is moved and True is returned
          If the new_position was not in the list of eligible moves the piece is not moved and False is returned"""
-        if new_position in self.getPossibleMoves():
+        if new_position in self.get_possible_moves():
             self.position = new_position
             return True
         else:
             return False
 
     @abc.abstractmethod
-    def getPossibleMoves(self) -> [Pos]:
+    def get_possible_moves(self) -> [Pos]:
         return
 
     def __str__(self):
         """ Overrides the default str method that convers an object to a string"""
-        return "A {color} {type} worth {points} points at {pos}".format(color=self.color,
-                                                                        type=self.__class__.__name__,
-                                                                        points=self.points,
-                                                                        pos=self.position)
+        return "A {color} {type} worth {points} points " \
+               "at {pos} with one hot encoding {oneHot}".format(color=self.color,
+                                                                type=self.__class__.__name__,
+                                                                points=self.points,
+                                                                pos=self.position,
+                                                                oneHot=self.oneHotEncoding)
 
 
-def generateOneHot(kind: str, color: Color) -> [int]:
+def generate_one_hot(kind: str, color: Color) -> [int]:
     """ Helper function to generate the one-hot-encoding. The index of the 1 is determined and padded with zeroes.
     The total length of the one-hot-encoding is always 12 (0-11). """
     index_dict = {'King': 0, 'Queen': 1, 'Knight': 2, 'Bishop': 3, 'Rook': 4, 'Pawn': 5}

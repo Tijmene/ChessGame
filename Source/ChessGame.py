@@ -5,7 +5,7 @@ import tkinter as tk
 from Position import vec_to_pos
 
 
-class Game:
+class ChessGame:
     turn_counter: int
     state_board: StateBoard
     gui_board: GUIBoard
