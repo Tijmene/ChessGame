@@ -1,10 +1,5 @@
 from Source.Pieces.Pawn import Pawn
-from Source.Pieces.Bishop import Bishop
-from Source.Pieces.King import King
-from Source.Pieces.Queen import Queen
-from Source.Pieces.Rook import Rook
-from Source.Pieces.Knight import Knight
-from Source.Pieces.Color import Color
+from Source.ChessUtils.Color import Color
 from Source.ChessUtils.Position import Position as Pos
 
 

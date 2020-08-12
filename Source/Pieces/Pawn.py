@@ -1,6 +1,6 @@
 from Source.Pieces.Piece import Piece
 from Source.ChessUtils.Position import Position as Pos
-from Source.Pieces.Color import Color
+from Source.ChessUtils.Color import Color
 
 
 class Pawn(Piece):

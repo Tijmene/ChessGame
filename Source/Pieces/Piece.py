@@ -1,5 +1,5 @@
 from Source.ChessUtils.Position import Position as Pos
-from Source.Pieces.Color import Color
+from Source.ChessUtils.Color import Color
 import abc
 
 
