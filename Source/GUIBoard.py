@@ -169,7 +169,7 @@ class GUIBoard(tk.Frame):
             piece = state_board[pos]
             if piece is not None:
                 image_name = piece.color + piece.kind
-                image_file = PIL.Image.open("./icons/" + image_name + ".PNG")
+                image_file = PIL.Image.open("../icons/" + image_name + ".PNG")
                 image_file = image_file.resize((piece_size, piece_size), Image.ANTIALIAS)
 
                 # A new variable has to be created for every piece
