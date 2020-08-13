@@ -42,7 +42,7 @@ class ChessGame:
                 if response is not None:
                     self.q.put(response)
                     self.last_response_send = response
-                    if response.has_move():
+                    if response.contains_move():
                         self.clock.switch()
                         self.turn_counter += 1
 
@@ -61,32 +61,41 @@ class ChessGame:
         response = GUIResponse()
         piece = self.board.query(user_input)
 
-        # The new input was in the list of possible moves
+        # The new input was in the list of possible moves, a move has been made!
         if user_input in self.last_response_send.possible_moves:
             move = Move(self.last_response_send.highlight, user_input)
             self.board.move_piece(move)
             response.move = move
 
-        # The new input was in the list of possible attacks
+        # The new input was in the list of possible attacks, an enemy piece has been taken!
         elif user_input in self.last_response_send.possible_attacks:
+            response.identifier_piece_taken = self.board.query(user_input).identifier
+            self.__handle_piece_taken(user_input)
             move = Move(self.last_response_send.highlight, user_input)
             self.board.move_piece(move)
             response.move = move
-            #TODO: Add points to player standing
 
         # The new input was a square not in the possible moveset. This is either an illegal selection or
         # the selection of a new piece
         elif piece is not None:
+            # Check if it was an illegal selection
             if piece.is_white() and self.turn_counter % 2 == 1 or piece.is_black() and self.turn_counter % 2 == 0:
                 response.highlight = user_input
                 (possible_moves, possible_attacks) = self.__generate_legal_actions(user_input)
                 response.possible_moves = possible_moves
                 response.possible_attacks = possible_attacks
 
-        # If the input is illegal don't send a response to the GUI
+        # If all checks fail the input is illegal, don't send a response to the GUI
         else:
             response = None
         return response
+
+    def __handle_piece_taken(self, pos: Pos):
+        piece = self.board.query(pos)
+        points_earned = piece.points
+        for player in self.players:
+            if piece.is_black() and player.plays_white() or piece.is_white() and player.plays_white():
+                player.points_earned += points_earned
 
     def __generate_legal_actions(self, user_input: Pos) -> ([Pos], [Pos]):
         possible_moves = []

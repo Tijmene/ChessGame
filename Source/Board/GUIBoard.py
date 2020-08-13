@@ -100,21 +100,23 @@ class GUIBoard(tk.Frame):
         self.__remove_highlights()
 
         # Something has moved, update the board according to the modified square_mapping
-        if message.has_move():
+        if message.contains_move():
             self.__place_pieces()
+            if message.contains_identifier_piece_taken():
+                self.canvas.delete(message.identifier_piece_taken)
 
         # A square is selected and has to be highlighted.
-        elif message.has_highlight():
+        elif message.contains_highlight():
             self.highlighted_tag = message.highlight.__str__()
             self.canvas.itemconfigure(self.highlighted_tag + "SQUARE", fill=self.color_selected_square)
 
         # Mark possible moves on the GUI with circles
-        if message.has_possible_moves():
+        if message.contains_possible_moves():
             for move in message.possible_moves:
                 self.__create_move_circle(move, self.color_target_square)
 
         # Mark possible attacks on the GUI with circles
-        if message.has_possible_attacks():
+        if message.contains_possible_attacks():
             for attack in message.possible_attacks:
                 self.__create_move_circle(attack, self.color_target_hit)
 

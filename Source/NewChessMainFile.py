@@ -2,11 +2,12 @@ from Source.Game.ChessGame import ChessGame
 from Source.Clocks.NoIncrement import NoIncrement
 from Source.Board.GameBoard import GameBoard
 from Source.Players.HumanPlayer import HumanPlayer
+from Source.ChessUtils.Color import Color
 
 
 if __name__ == "__main__":
-    player_1 = HumanPlayer("Simon")
-    player_2 = HumanPlayer("Tijmen")
+    player_1 = HumanPlayer("Simon", Color.WHITE)
+    player_2 = HumanPlayer("Tijmen", Color.BLACK)
 
     board = GameBoard()
     board.generate_default_setup()
