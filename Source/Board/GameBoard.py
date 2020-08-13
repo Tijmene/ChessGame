@@ -1,3 +1,4 @@
+from Source.Pieces.Piece import Piece
 from Source.Pieces.Pawn import Pawn
 from Source.Pieces.Bishop import Bishop
 from Source.Pieces.King import King
@@ -17,7 +18,7 @@ class GameBoard:
     update_str_board = True  # This bool is used to redraw the string representation on updates(if gui is disabled)
 
     def __init__(self):
-        self.square_mapping = self.create_empty_board()
+        self.square_mapping = self.__create_empty_board()
 
     def enable_gui(self):
         self.gui = GUIBoard(self.square_mapping)
@@ -28,7 +29,7 @@ class GameBoard:
         else:
             self.gui.connect(queue)
 
-    def create_empty_board(self) -> dict:
+    def __create_empty_board(self) -> dict:
         """ Creates an empty board which is a mapping of positions in File Rank format """
         empty_board = dict()
         for file in range(65, 73): # ASCII code for A - H
@@ -63,6 +64,10 @@ class GameBoard:
                 cls = globals()[piece_name]  # Loads the class via the name of the class.
                 self.square_mapping[pos] = cls(color=color,
                                                identifier=pos)
+
+    def query(self, pos: Pos) -> Piece:
+        """ Queries the board and returns the piece if present, else returns None """
+        return self.square_mapping[pos.__str__()]
 
     def move_piece(self, move: Move):
         """ Updates the position of a piece on the board """

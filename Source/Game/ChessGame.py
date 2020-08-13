@@ -2,6 +2,10 @@ from Source.Players.Player import Player
 from Source.Board.GameBoard import GameBoard
 from Source.Clocks.ChessClock import ChessClock
 from Source.ChessUtils.Move import Move
+from Source.ChessUtils.Position import Position as Pos
+from Source.ChessUtils.GUIResponse import GUIResponse
+
+
 import queue
 
 
@@ -36,13 +40,24 @@ class ChessGame:
 
         self.clock.stop()
 
-    def check_for_user_input(self) -> Move:
+    def check_for_user_input(self) -> Pos:
         if self.q.empty():
             return None
         else:
             return self.q.get()
 
-    def handle_user_input(self, user_input: str):
-        pass
+    def handle_user_input(self, user_input: Pos):
+        """ This method checks user input and decides what the necessary action is that should be executed """
+        content_clicked_square = self.board.query(user_input)
+        response = None
+        if content_clicked_square is not None:
+            piece = content_clicked_square
+            if piece.is_white() and self.turn_counter % 2 == 1:
+                response = (GUIResponse(highlight=user_input))
+            elif piece.is_black() and self.turn_counter % 2 == 0:
+                response = (GUIResponse(highlight=user_input))
+
+        self.q.put(response)
+
 
 
