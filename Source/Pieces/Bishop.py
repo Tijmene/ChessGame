@@ -8,7 +8,7 @@ class Bishop(Piece):
         self.points = 3
         return
 
-    def get_possible_moves(self) -> [Pos]:  # TODO: Implement
+    def get_possible_moves(self, pos: Pos) -> [Pos]:  # TODO: Implement
         return
 
     def get_letter_code(self) -> chr:

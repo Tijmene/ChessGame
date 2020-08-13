@@ -21,8 +21,8 @@ class GUIBoard(tk.Frame):
         self.color_white = "white"              # Color of the "White" tiles
         self.color_black = "gray63"             # Color of the "Black tiles
         self.color_selected_square = "gold"     # Color of the tile that is selected
-        self.color_target_hit = "orange red"    # Color of the target square
-        self.color_target_square = "khakil"     # Color of the target square if it has a enemy piece on it
+        self.color_target_hit = "orange red"    # Color of the target square if it has an enemy piece on it
+        self.color_target_square = "khaki1"     # Color of the target square if it has no enemy in it
         self.piece_size = int(self.size * 0.7)  # Size of the pieces on the chessboard
         self.hit_scale = 0.1                    # Scale the hit circle
 
@@ -103,9 +103,26 @@ class GUIBoard(tk.Frame):
             self.highlighted_tag = message.highlight.__str__()
             self.canvas.itemconfigure(self.highlighted_tag + "SQUARE", fill=self.color_selected_square)
 
+        if message.has_possible_moves():
+            for move in message.possible_moves:
+                self.__create_move_circle(move, self.color_target_square)
+
+        if message.has_possible_attacks():
+            for attack in message.possible_attacks:
+                self.__create_move_circle(attack, self.color_target_hit)
+
+    def __create_move_circle(self, pos: Pos, color: str):
+        vec_x, vec_y = pos.to_vec()
+        x1 = (vec_x * self.size) + self.size * self.hit_scale
+        y1 = (vec_y * self.size) + self.size * self.hit_scale
+        x2 = x1 + self.size - self.size * (2 * self.hit_scale)
+        y2 = y1 + self.size - self.size * (2 * self.hit_scale)
+        self.canvas.create_oval(x1, y1, x2, y2, outline="black", fill=color, tags="square_target")
+
     def __remove_highlights(self):
         if self.highlighted_tag:
             self.__restore_default_color(self.highlighted_tag)
+        self.canvas.delete("square_target")
 
     def __restore_default_color(self, tag: str):
         even_file = ord(tag[0]) % 2 == 0

@@ -17,6 +17,7 @@ class ChessGame:
     board: GameBoard
     clock: ChessClock
     game_running: bool = True
+    content_previous_click = None
 
     def __init__(self, players: [Player], board: GameBoard, clock: ChessClock, gui_enabled=True):
         self.players = players
@@ -49,15 +50,34 @@ class ChessGame:
     def handle_user_input(self, user_input: Pos):
         """ This method checks user input and decides what the necessary action is that should be executed """
         content_clicked_square = self.board.query(user_input)
-        response = None
+        response = GUIResponse()
         if content_clicked_square is not None:
             piece = content_clicked_square
             if piece.is_white() and self.turn_counter % 2 == 1:
-                response = (GUIResponse(highlight=user_input))
+                response.highlight = user_input
+                (possible_moves, possible_attacks) = self.__generate_legal_actions(user_input)
             elif piece.is_black() and self.turn_counter % 2 == 0:
-                response = (GUIResponse(highlight=user_input))
+                response.highlight = user_input
+                (possible_moves, possible_attacks) = self.__generate_legal_actions(user_input)
+            response.possible_moves = possible_moves
+            response.possible_attacks = possible_attacks
 
         self.q.put(response)
+
+    def __generate_legal_actions(self, user_input: Pos) -> ([Pos], [Pos]):
+        possible_moves = []
+        possible_attacks = []
+
+        piece = self.board.query(user_input)
+        all_actions = piece.get_possible_moves(user_input)
+        for action in all_actions:
+            content_of_target_square = self.board.query(action.__str__())
+            if content_of_target_square is None:
+                possible_moves.append(action)
+            elif content_of_target_square.color != piece.color:
+                possible_attacks.append(action)
+
+        return possible_moves, possible_attacks
 
 
 
