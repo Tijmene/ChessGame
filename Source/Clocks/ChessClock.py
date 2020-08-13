@@ -49,8 +49,6 @@ class ChessClock:
             self.remaining_time_player_2 += self.time_increment
             self.active_clock = 1
 
-        print(self.active_clock)
-
     def get_remaining_clock_time(self, player_number: int) -> float:
         """ Retrieves the current clock time with 2 decimal point precision """
         if player_number == 1:

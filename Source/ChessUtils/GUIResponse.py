@@ -5,8 +5,8 @@ from Source.ChessUtils.Move import Move
 class GUIResponse:
 
     def __init__(self, highlight: Pos = None,
-                 possible_moves: [Pos] = None,
-                 possible_attacks: [Pos] = None,
+                 possible_moves: [Pos] = [],
+                 possible_attacks: [Pos] = [],
                  move: Move = None):
 
         self.highlight = highlight

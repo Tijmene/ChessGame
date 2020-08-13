@@ -17,7 +17,8 @@ class ChessGame:
     board: GameBoard
     clock: ChessClock
     game_running: bool = True
-    content_previous_click = None
+    last_response_send = GUIResponse()
+    last_message_received = None
 
     def __init__(self, players: [Player], board: GameBoard, clock: ChessClock, gui_enabled=True):
         self.players = players
@@ -37,7 +38,13 @@ class ChessGame:
             self.board.draw()
             user_input = self.check_for_user_input()
             if user_input is not None:
-                self.handle_user_input(user_input)
+                response = self.__generate_response(user_input)
+                if response is not None:
+                    self.q.put(response)
+                    self.last_response_send = response
+                    if response.has_move():
+                        self.clock.switch()
+                        self.turn_counter += 1
 
         self.clock.stop()
 
@@ -45,24 +52,41 @@ class ChessGame:
         if self.q.empty():
             return None
         else:
-            return self.q.get()
+            self.last_message_received = self.q.get()
+            return self.last_message_received
 
-    def handle_user_input(self, user_input: Pos):
-        """ This method checks user input and decides what the necessary action is that should be executed """
-        content_clicked_square = self.board.query(user_input)
+    def __generate_response(self, user_input: Pos) -> GUIResponse:
+        """ This method checks user input and decides what the necessary action is that should be executed
+        If nothing changes (because the users clicks on something irrelevant) the last response is resend"""
         response = GUIResponse()
-        if content_clicked_square is not None:
-            piece = content_clicked_square
-            if piece.is_white() and self.turn_counter % 2 == 1:
-                response.highlight = user_input
-                (possible_moves, possible_attacks) = self.__generate_legal_actions(user_input)
-            elif piece.is_black() and self.turn_counter % 2 == 0:
-                response.highlight = user_input
-                (possible_moves, possible_attacks) = self.__generate_legal_actions(user_input)
-            response.possible_moves = possible_moves
-            response.possible_attacks = possible_attacks
+        piece = self.board.query(user_input)
 
-        self.q.put(response)
+        # The new input was in the list of possible moves
+        if user_input in self.last_response_send.possible_moves:
+            move = Move(self.last_response_send.highlight, user_input)
+            self.board.move_piece(move)
+            response.move = move
+
+        # The new input was in the list of possible attacks
+        elif user_input in self.last_response_send.possible_attacks:
+            move = Move(self.last_response_send.highlight, user_input)
+            self.board.move_piece(move)
+            response.move = move
+            #TODO: Add points to player standing
+
+        # The new input was a square not in the possible moveset. This is either an illegal selection or
+        # the selection of a new piece
+        elif piece is not None:
+            if piece.is_white() and self.turn_counter % 2 == 1 or piece.is_black() and self.turn_counter % 2 == 0:
+                response.highlight = user_input
+                (possible_moves, possible_attacks) = self.__generate_legal_actions(user_input)
+                response.possible_moves = possible_moves
+                response.possible_attacks = possible_attacks
+
+        # If the input is illegal don't send a response to the GUI
+        else:
+            response = None
+        return response
 
     def __generate_legal_actions(self, user_input: Pos) -> ([Pos], [Pos]):
         possible_moves = []

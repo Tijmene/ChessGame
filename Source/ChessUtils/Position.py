@@ -20,6 +20,9 @@ class Position:
     def __str__(self):
         return "{file}{rank}".format(file=self.file, rank=self.rank)
 
+    def __eq__(self, obj):
+        return isinstance(obj, Position) and obj.file == self.file and obj.rank == self.rank
+
 
 def vec_to_pos(vec_x, vec_y):
     file = chr(vec_x + 65)

@@ -24,7 +24,7 @@ class GUIBoard(tk.Frame):
         self.color_target_hit = "orange red"    # Color of the target square if it has an enemy piece on it
         self.color_target_square = "khaki1"     # Color of the target square if it has no enemy in it
         self.piece_size = int(self.size * 0.7)  # Size of the pieces on the chessboard
-        self.hit_scale = 0.1                    # Scale the hit circle
+        self.hit_scale = 0.05                   # Scale the hit circle
 
         #  Default values are overridden by provided values if they are present in the graphical_options variable.
         for (option, value) in graphical_options.items():
@@ -99,17 +99,27 @@ class GUIBoard(tk.Frame):
     def __handle_message(self, message: GUIResponse):
         self.__remove_highlights()
 
-        if message.has_highlight():
+        # Something has moved, update the board according to the modified square_mapping
+        if message.has_move():
+            self.__place_pieces()
+
+        # A square is selected and has to be highlighted.
+        elif message.has_highlight():
             self.highlighted_tag = message.highlight.__str__()
             self.canvas.itemconfigure(self.highlighted_tag + "SQUARE", fill=self.color_selected_square)
 
+        # Mark possible moves on the GUI with circles
         if message.has_possible_moves():
             for move in message.possible_moves:
                 self.__create_move_circle(move, self.color_target_square)
 
+        # Mark possible attacks on the GUI with circles
         if message.has_possible_attacks():
             for attack in message.possible_attacks:
                 self.__create_move_circle(attack, self.color_target_hit)
+
+        # Raise the pieces so that they are position above circles, if they are present.
+        self.canvas.tag_raise("piece")
 
     def __create_move_circle(self, pos: Pos, color: str):
         vec_x, vec_y = pos.to_vec()
