@@ -4,13 +4,6 @@ from Source.Clocks.ChessClock import ChessClock
 from Source.ChessUtils.Move import Move
 from Source.ChessUtils.Position import Position as Pos
 from Source.ChessUtils.GUIResponse import GUIResponse
-from Source.Pieces.Pawn import Pawn
-from Source.Pieces.Knight import Knight
-from Source.Pieces.Rook import Rook
-from Source.Pieces.Bishop import Bishop
-from Source.Pieces.Queen import Queen
-from Source.Pieces.King import King
-
 import copy
 import queue
 

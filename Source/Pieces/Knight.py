@@ -10,6 +10,9 @@ class Knight(Piece):
         return
 
     def get_legal_moves(self, current_pos: Pos, square_mapping: dict) -> ([Pos], [Pos]):
+        possible_moves = []
+        possible_attacks = []
+
         possible_pos_shift = np.array([[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]])
         x, y = current_pos.to_vec()
         np_pos_vec = np.array([x, y])
@@ -20,8 +23,6 @@ class Knight(Piece):
                 all_actions.append(vec_to_pos(vec_pos[0], vec_pos[1]))
 
         # Filter the actions
-        possible_moves = []
-        possible_attacks = []
         for action in all_actions:
             content_of_target_square = square_mapping[action.__str__()]
             if content_of_target_square is None:
