@@ -15,20 +15,22 @@ class GameBoard:
     square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
     gui_enabled: bool = False
     gui: GUIBoard = None  # The class responsible for creating the Graphical User Interface for the board
+    update_str_board = True  # This bool is used to redraw the string representation on updates(if gui is disabled)
 
-    def __init__(self):
+    def __init__(self, gui_enabled=True):
+        self.gui_enabled = gui_enabled
+        self.create_empty_board()
+
+    def create_empty_board(self):
         """ Creates an empty board which is a mapping of positions in File Rank format """
         empty_board = dict()
         for file in range(65, 73): # ASCII code for A - H
             for rank in range(1, 9):
                 empty_board["{file}{rank}".format(file=chr(file), rank=rank)] = None
-
         self.square_mapping = empty_board
 
-    def enable_gui(self):
-        self.gui_enabled = True
-
     def generate_default_setup(self):
+        """ Populates the board with the initial default chess setup """
         piece_type_dict = {
             **dict.fromkeys(['A', 'H'], 'Rook'),
             **dict.fromkeys(['B', 'G'], 'Knight'),
@@ -66,15 +68,21 @@ class GameBoard:
         piece = self.square_mapping[move.from_pos.__str__()]
         self.square_mapping[move.to_pos.__str__()] = piece
         self.square_mapping[move.from_pos.__str__()] = None
+        self.update_str_board = True
 
     def draw(self):
         if not self.gui_enabled:
-            print("The GUI on this board is switched off, printing string representation \n "
-                  "{string_board}".format(string_board=self))
+            self.str_print_on_update()
         elif self.gui_enabled and self.gui is None:
             self.gui = GUIBoard(self.square_mapping)
         elif self.gui_enabled and self.gui is not None:
             self.gui.update()
+
+    def str_print_on_update(self):
+        if self.update_str_board:
+            print("The GUI on this board is switched off, printing string representation \n "
+                  "{string_board}".format(string_board=self))
+            self.update_str_board = False
 
     def __str__(self):
         """ Converts the board to the string representation of the board """
@@ -82,24 +90,18 @@ class GameBoard:
         ranks = list(range(1, 9))
         ranks.reverse()
 
-        str_output = "CHESS GAME: \n _ _ _ _ _ _ _ _ \n"
+        str_output = "_ _ _ _ _ _ _ _ \n"
 
         for rank in ranks:  # ASCII code for A - H
             str_output += "|"
             for file in files:
                 content = self.square_mapping["{file}{rank}".format(file=chr(file), rank=rank)]
                 if content is None:  # Create a checker board pattern with white and black squares.
-                    if file % 2 == 0:  # Even file
-                        if rank % 2 == 0:
-                            str_output += "\u0332 |"
-                        else:
-                            str_output += "\u0332\u258B|"
-
+                    if file % 2 == 0 and rank % 2 == 0 or file % 2 != 0 and rank % 2 != 0:
+                        str_output += "\u0332 |"
                     else:
-                        if rank % 2 == 0:
-                            str_output += "\u0332\u258B|"
-                        else:
-                            str_output += "\u0332 |"
+                        str_output += "\u0332\u258B|"
+
                 else:
                     piece = content
                     letter_code = piece.get_letter_code()
@@ -107,6 +109,7 @@ class GameBoard:
                         str_output += "\u0332\033[1m" + letter_code + "|"
                     elif content.is_black():
                         str_output += "\u0332" + letter_code + "|"
+
             str_output += "\n"
 
         return str_output[:-1]

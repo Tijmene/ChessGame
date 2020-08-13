@@ -8,10 +8,10 @@ if __name__ == "__main__":
     player_1 = HumanPlayer("Simon")
     player_2 = HumanPlayer("Tijmen")
 
-    board = GameBoard()
+    board = GameBoard(gui_enabled=False)
     board.generate_default_setup()
 
     game = ChessGame(players=[player_1, player_2],
                      board=board,
                      clock=NoIncrement())
-    game.start()
+    game.run()

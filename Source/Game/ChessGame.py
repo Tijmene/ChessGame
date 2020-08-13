@@ -18,9 +18,8 @@ class ChessGame:
         self.players = players
         self.board = board
         self.clock = clock
-        board.enable_gui()
 
-    def start(self):
+    def run(self):
         self.clock.start()
         received_move = None
 
