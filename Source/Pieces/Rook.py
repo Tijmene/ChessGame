@@ -8,7 +8,7 @@ class Rook(Piece):
         self.points = 5
         return
 
-    def get_possible_moves(self, pos: Pos) -> [Pos]:  # TODO: Implement
+    def get_legal_moves(self, pos: Pos, square_mapping: dict) -> ([Pos], [Pos]):  # TODO: Implement
         return
 
     def get_letter_code(self) -> chr:

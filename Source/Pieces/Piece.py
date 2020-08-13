@@ -1,6 +1,5 @@
 from Source.ChessUtils.Position import Position as Pos
 from Source.ChessUtils.Color import Color
-from Source.ChessUtils.Move import Move
 import abc
 
 
@@ -25,10 +24,9 @@ class Piece:
         return
 
     @abc.abstractmethod
-    def get_possible_moves(self, pos: Pos) -> [Pos]:
-        """ This method retrieves the list of possible moves, only taking into account the moveset of the piece
-        and the dimensions of the board. The other pieces are not taken into account on this level as the piece
-        has not awareness about other pieces around him """
+    def get_legal_moves(self, pos: Pos, square_mapping: dict) -> ([Pos], [Pos]):
+        """ This method retrieves the list of legal moves, taking into account the moveset of the piece and the board
+        and the pieces on it. """
         return
 
     def __str__(self):

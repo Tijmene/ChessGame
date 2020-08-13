@@ -9,9 +9,9 @@ class Knight(Piece):
         self.points = 3
         return
 
-    def get_possible_moves(self, pos: Pos) -> [Pos]:  # TODO: Implement
+    def get_legal_moves(self, current_pos: Pos, square_mapping: dict) -> ([Pos], [Pos]):
         possible_pos_shift = np.array([[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]])
-        x, y = pos.to_vec()
+        x, y = current_pos.to_vec()
         np_pos_vec = np.array([x, y])
         shifted_pos = np_pos_vec + possible_pos_shift
         all_actions = []
@@ -19,7 +19,17 @@ class Knight(Piece):
             if not np.amin(vec_pos) < 0 and not np.amax(vec_pos) > 7:
                 all_actions.append(vec_to_pos(vec_pos[0], vec_pos[1]))
 
-        return all_actions
+        # Filter the actions
+        possible_moves = []
+        possible_attacks = []
+        for action in all_actions:
+            content_of_target_square = square_mapping[action.__str__()]
+            if content_of_target_square is None:
+                possible_moves.append(action)
+            elif content_of_target_square.color != self.color:
+                possible_attacks.append(action)
+
+        return possible_moves, possible_attacks
 
     def get_letter_code(self) -> chr:
         return "N"

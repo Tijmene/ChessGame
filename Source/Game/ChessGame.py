@@ -4,8 +4,14 @@ from Source.Clocks.ChessClock import ChessClock
 from Source.ChessUtils.Move import Move
 from Source.ChessUtils.Position import Position as Pos
 from Source.ChessUtils.GUIResponse import GUIResponse
+from Source.Pieces.Pawn import Pawn
+from Source.Pieces.Knight import Knight
+from Source.Pieces.Rook import Rook
+from Source.Pieces.Bishop import Bishop
+from Source.Pieces.Queen import Queen
+from Source.Pieces.King import King
 
-
+import copy
 import queue
 
 
@@ -98,18 +104,12 @@ class ChessGame:
                 player.points_earned += points_earned
 
     def __generate_legal_actions(self, user_input: Pos) -> ([Pos], [Pos]):
-        possible_moves = []
-        possible_attacks = []
-
+        """ First all actions are retrieved disregarding other pieces on the board. This list of actions
+        has to be filtered by the ChessGame class as this class is the only class who has all the information
+        to do so and can communicate with the GUI """
         piece = self.board.query(user_input)
-        all_actions = piece.get_possible_moves(user_input)
-        for action in all_actions:
-            content_of_target_square = self.board.query(action.__str__())
-            if content_of_target_square is None:
-                possible_moves.append(action)
-            elif content_of_target_square.color != piece.color:
-                possible_attacks.append(action)
-
+        copy_of_game_state = copy.deepcopy(self.board.square_mapping)
+        possible_moves, possible_attacks = piece.get_legal_moves(user_input, copy_of_game_state)
         return possible_moves, possible_attacks
 
 
