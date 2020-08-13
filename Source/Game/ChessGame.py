@@ -4,6 +4,7 @@ from Source.Clocks.ChessClock import ChessClock
 from Source.ChessUtils.Move import Move
 from Source.ChessUtils.Position import Position as Pos
 from Source.ChessUtils.GUIResponse import GUIResponse
+from Source.ChessUtils.PossibleMoveSet import PossibleMoveSet
 import copy
 import queue
 
@@ -80,9 +81,10 @@ class ChessGame:
             # Check if it was an illegal selection
             if piece.is_white() and self.turn_counter % 2 == 1 or piece.is_black() and self.turn_counter % 2 == 0:
                 response.highlight = user_input
-                (possible_moves, possible_attacks) = self.__generate_legal_actions(user_input)
-                response.possible_moves = possible_moves
-                response.possible_attacks = possible_attacks
+                possible_move_set = self.__generate_legal_actions(user_input)
+                response.possible_move_set = self.__generate_legal_actions(user_input)
+                response.possible_moves = possible_move_set.possible_moves
+                response.possible_attacks = possible_move_set.possible_attacks
 
         # If all checks fail the input is illegal, don't send a response to the GUI
         else:
@@ -103,7 +105,7 @@ class ChessGame:
         piece = self.board.query(user_input)
         copy_of_game_state = copy.deepcopy(self.board.square_mapping)
         possible_moves, possible_attacks = piece.get_legal_moves(user_input, copy_of_game_state)
-        return possible_moves, possible_attacks
+        return PossibleMoveSet(possible_moves, possible_attacks)
 
 
 
