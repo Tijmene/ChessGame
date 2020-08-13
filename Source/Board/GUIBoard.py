@@ -2,12 +2,13 @@ import tkinter as tk
 import PIL.Image
 import PIL.ImageTk
 from PIL import Image
-from Source.ChessUtils.Position import Position as Pos
+from Source.ChessUtils.Position import Position as Pos, vec_to_pos
 
 
 class GUIBoard(tk.Frame):
     """ Creates the graphical user interface (GUI) that displays the current state of the board """
     square_mapping: dict
+    queue = None
 
     def __init__(self, square_mapping: dict, **graphical_options):
         self.square_mapping = square_mapping
@@ -48,6 +49,9 @@ class GUIBoard(tk.Frame):
         self.canvas.bind("<Button-1>", self.__handle_mouse_click)  # Left mouse clicks
         # TODO: Handle closing of window event.
 
+    def connect(self, queue):
+        self.queue = queue
+
     def __handle_refresh(self, event):
         """ Redraw the board, possibly in response to window being resized """
         x_size = int((event.width - 1) / self.columns)
@@ -67,7 +71,12 @@ class GUIBoard(tk.Frame):
         self.canvas.tag_lower("square")
 
     def __handle_mouse_click(self, event):
-        pass
+        """ The GUI identifies the selected square and sends it to the ChessGame """
+        vec_x = event.x // self.size
+        vec_y = event.y // self.size
+
+        pos_clicked_square = vec_to_pos(vec_x, vec_y)
+        self.queue.put(pos_clicked_square)
 
     def update(self):
         """ This method can be called from outside of this class (e.g. from the main game loop) This updates the

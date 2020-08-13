@@ -2,7 +2,7 @@ from Source.Players.Player import Player
 from Source.Board.GameBoard import GameBoard
 from Source.Clocks.ChessClock import ChessClock
 from Source.ChessUtils.Move import Move
-import tkinter as tk
+import queue
 
 
 class ChessGame:
@@ -14,22 +14,35 @@ class ChessGame:
     clock: ChessClock
     game_running: bool = True
 
-    def __init__(self, players: [Player], board: GameBoard, clock: ChessClock):
+    def __init__(self, players: [Player], board: GameBoard, clock: ChessClock, gui_enabled=True):
         self.players = players
         self.board = board
         self.clock = clock
 
+        if gui_enabled:
+            board.enable_gui()
+            self.q = queue.Queue()
+            board.connect(queue=self.q)
+
     def run(self):
         self.clock.start()
-        received_move = None
 
         # The main game loop executes here
         while self.game_running:
             self.board.draw()
-            if received_move is not None:
-                self.board.move_piece(received_move)
-                self.clock.switch()
-                self.turn_counter += 1
-                received_move = None
+            user_input = self.check_for_user_input()
+            if user_input is not None:
+                self.handle_user_input(user_input)
 
         self.clock.stop()
+
+    def check_for_user_input(self) -> Move:
+        if self.q.empty():
+            return None
+        else:
+            return self.q.get()
+
+    def handle_user_input(self, user_input: str):
+        pass
+
+

@@ -13,21 +13,28 @@ from Source.Board.GUIBoard import GUIBoard
 
 class GameBoard:
     square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
-    gui_enabled: bool = False
     gui: GUIBoard = None  # The class responsible for creating the Graphical User Interface for the board
     update_str_board = True  # This bool is used to redraw the string representation on updates(if gui is disabled)
 
-    def __init__(self, gui_enabled=True):
-        self.gui_enabled = gui_enabled
-        self.create_empty_board()
+    def __init__(self):
+        self.square_mapping = self.create_empty_board()
 
-    def create_empty_board(self):
+    def enable_gui(self):
+        self.gui = GUIBoard(self.square_mapping)
+
+    def connect(self, queue):
+        if self.gui is None:
+            raise Exception("The GUI is not enabled")
+        else:
+            self.gui.connect(queue)
+
+    def create_empty_board(self) -> dict:
         """ Creates an empty board which is a mapping of positions in File Rank format """
         empty_board = dict()
         for file in range(65, 73): # ASCII code for A - H
             for rank in range(1, 9):
                 empty_board["{file}{rank}".format(file=chr(file), rank=rank)] = None
-        self.square_mapping = empty_board
+        return empty_board
 
     def generate_default_setup(self):
         """ Populates the board with the initial default chess setup """
@@ -71,11 +78,9 @@ class GameBoard:
         self.update_str_board = True
 
     def draw(self):
-        if not self.gui_enabled:
+        if self.gui is None:
             self.str_print_on_update()
-        elif self.gui_enabled and self.gui is None:
-            self.gui = GUIBoard(self.square_mapping)
-        elif self.gui_enabled and self.gui is not None:
+        elif self.gui is not None:
             self.gui.update()
 
     def str_print_on_update(self):
