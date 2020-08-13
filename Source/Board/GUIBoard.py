@@ -32,8 +32,8 @@ class GUIBoard(tk.Frame):
         self.piece_to_move = None    # Variable that stores a piece to potentially move it with the next click
 
         # Create the canvas on which everything is drawn.
-        root = tk.Tk()
-        tk.Frame.__init__(self, root)
+        self.tk_root = tk.Tk()
+        tk.Frame.__init__(self, self.tk_root)
         canvas_width = self.columns * self.size
         canvas_height = self.rows * self.size
         self.canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0,
@@ -41,13 +41,12 @@ class GUIBoard(tk.Frame):
         self.canvas.pack(side="top", fill="both", expand=True, padx=2, pady=2)
 
         # Draw all elements in the canvas.
-        self.draw()
+        self.__draw()
 
         # Bind actions to functions
         self.canvas.bind("<Configure>", self.__handle_refresh)        # Reconfigurations such as a resize
         self.canvas.bind("<Button-1>", self.__handle_mouse_click)  # Left mouse clicks
-
-        root.mainloop()
+        # TODO: Handle closing of window event.
 
     def __handle_refresh(self, event):
         """ Redraw the board, possibly in response to window being resized """
@@ -71,14 +70,12 @@ class GUIBoard(tk.Frame):
         pass
 
     def update(self):
-        """ Can be called after the Square_mapping has been updated by an external source """
-        self.canvas.delete("piece")
-        for pos_str, piece in self.square_mapping.items():
-            if piece is not None:
-                self.canvas.create_image(1, 1, image=globals()['chess_piece%s' % piece.identifier],
-                                         tags=(piece.identifier, "piece"), anchor="c")
+        """ This method can be called from outside of this class (e.g. from the main game loop) This updates the
+        GUI. """
+        self.tk_root.update_idletasks()
+        self.tk_root.update()
 
-    def draw(self):
+    def __draw(self):
         self.pack(side="top", fill="both", expand="true", padx=4, pady=4)
         self.__draw_checkerboard()
         self.__load_pieces()
@@ -129,6 +126,3 @@ class GUIBoard(tk.Frame):
             y2 = y1 + self.size
             self.canvas.create_rectangle(x1, y1, x2, y2, outline="black",
                                          fill=self.color_selected_square, tags="square_selected")
-
-    def remove_piece(self, identifier: str):
-        self.canvas.delete(identifier)

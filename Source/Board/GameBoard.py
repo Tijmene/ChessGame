@@ -13,6 +13,7 @@ from Source.Board.GUIBoard import GUIBoard
 
 class GameBoard:
     square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
+    gui_enabled: bool = False
     gui: GUIBoard = None  # The class responsible for creating the Graphical User Interface for the board
 
     def __init__(self):
@@ -23,6 +24,9 @@ class GameBoard:
                 empty_board["{file}{rank}".format(file=chr(file), rank=rank)] = None
 
         self.square_mapping = empty_board
+
+    def enable_gui(self):
+        self.gui_enabled = True
 
     def generate_default_setup(self):
         piece_type_dict = {
@@ -64,9 +68,12 @@ class GameBoard:
         self.square_mapping[move.from_pos.__str__()] = None
 
     def draw(self):
-        if self.gui is None:
+        if not self.gui_enabled:
+            print("The GUI on this board is switched off, printing string representation \n "
+                  "{string_board}".format(string_board=self))
+        elif self.gui_enabled and self.gui is None:
             self.gui = GUIBoard(self.square_mapping)
-        else:
+        elif self.gui_enabled and self.gui is not None:
             self.gui.update()
 
     def __str__(self):
