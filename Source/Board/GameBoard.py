@@ -50,24 +50,18 @@ class GameBoard:
             file = pos[0]
             rank = pos[1]
 
-            if rank == "1":
-                piece_name = piece_type_dict[file]
-                cls = globals()[piece_name]
-                self.square_mapping[pos] = cls(color=Color.WHITE,
-                                               identifier=pos)
+            if rank == "1" or rank == "2":
+                color = Color.WHITE
+            elif rank == "7" or rank == "8":
+                color = Color.BLACK
 
-            elif rank == "2":
-                self.square_mapping[pos] = Pawn(color=Color.WHITE,
+            if rank == "2" or rank == "7":
+                self.square_mapping[pos] = Pawn(color=color,
                                                 identifier=pos)
-
-            elif rank == "7":
-                self.square_mapping[pos] = Pawn(color=Color.BLACK,
-                                                identifier=pos)
-
-            elif rank == "8":
+            elif rank == "1" or rank == "8":
                 piece_name = piece_type_dict[file]
-                cls = globals()[piece_name]
-                self.square_mapping[pos] = cls(color=Color.BLACK,
+                cls = globals()[piece_name]  # Loads the class via the name of the class.
+                self.square_mapping[pos] = cls(color=color,
                                                identifier=pos)
 
     def move_piece(self, move: Move):
