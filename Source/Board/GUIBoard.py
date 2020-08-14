@@ -110,14 +110,14 @@ class GUIBoard(tk.Frame):
             self.highlighted_tag = message.highlight.__str__()
             self.canvas.itemconfigure(self.highlighted_tag + "SQUARE", fill=self.color_selected_square)
 
-        # Mark possible moves on the GUI with circles
-        if message.contains_possible_moves():
-            for move in message.possible_moves:
+        # If a possible move set is present mark the GUI with the options
+        if message.contains_possible_move_set():
+            # Mark possible moves on the GUI with circles
+            for move in message.possible_move_set.possible_moves:
                 self.__create_move_circle(move, self.color_target_square)
 
-        # Mark possible attacks on the GUI with circles
-        if message.contains_possible_attacks():
-            for attack in message.possible_attacks:
+            # Mark possible attacks on the GUI with circles
+            for attack in message.possible_move_set.possible_attacks:
                 self.__create_move_circle(attack, self.color_target_hit)
 
         # Raise the pieces so that they are position above circles, if they are present.

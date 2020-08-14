@@ -59,33 +59,32 @@ class ChessGame:
         response = GUIResponse()
         piece = self.board.query(user_input)
 
-        # The new input was in the list of possible moves, a move has been made!
-        if user_input in self.last_response_send.possible_moves:
-            move = Move(self.last_response_send.highlight, user_input)
-            self.board.move_piece(move)
-            response.move = move
+        # If the last response send contained a move set it is possible a piece has been moved
+        if self.last_response_send.contains_possible_move_set():
+            # The new input was in the list of possible moves, a move has been made!
+            if user_input in self.last_response_send.possible_move_set.possible_moves:
+                move = Move(self.last_response_send.highlight, user_input)
+                self.board.move_piece(move)
+                response.move = move
 
-        # The new input was in the list of possible attacks, an enemy piece has been taken!
-        elif user_input in self.last_response_send.possible_attacks:
-            response.identifier_piece_taken = self.board.query(user_input).identifier
-            self.__handle_piece_taken(user_input)
-            move = Move(self.last_response_send.highlight, user_input)
-            self.board.move_piece(move)
-            response.move = move
+            # The new input was in the list of possible attacks, an enemy piece has been taken!
+            elif user_input in self.last_response_send.possible_move_set.possible_attacks:
+                response.identifier_piece_taken = self.board.query(user_input).identifier
+                self.__handle_piece_taken(user_input)
+                move = Move(self.last_response_send.highlight, user_input)
+                self.board.move_piece(move)
+                response.move = move
 
-        # The new input was a square not in the possible moveset. This is either an illegal selection or
+        # The new input was not a square not in the possible moveset. The user input is either an illegal selection or
         # the selection of a new piece
-        elif piece is not None:
-            # Check if it was an illegal selection
+        if piece is not None:
+            # Highlight the piece is it is the same color as the color of the player who's turn it is
             if piece.is_white() and self.turn_counter % 2 == 1 or piece.is_black() and self.turn_counter % 2 == 0:
                 response.highlight = user_input
-                possible_move_set = self.__generate_legal_actions(user_input)
                 response.possible_move_set = self.__generate_legal_actions(user_input)
-                response.possible_moves = possible_move_set.possible_moves
-                response.possible_attacks = possible_move_set.possible_attacks
 
         # If all checks fail the input is illegal, don't send a response to the GUI
-        else:
+        elif not self.last_response_send.contains_possible_move_set():
             response = None
         return response
 
@@ -96,14 +95,13 @@ class ChessGame:
             if (piece_taken.is_black() and player.plays_white()) or (piece_taken.is_white() and player.plays_black()):
                 player.points_earned += points_earned
 
-    def __generate_legal_actions(self, user_input: Pos) -> ([Pos], [Pos]):
+    def __generate_legal_actions(self, user_input: Pos) -> PossibleMoveSet:
         """ First all actions are retrieved disregarding other pieces on the board. This list of actions
         has to be filtered by the ChessGame class as this class is the only class who has all the information
         to do so and can communicate with the GUI """
         piece = self.board.query(user_input)
         copy_of_game_state = copy.deepcopy(self.board.square_mapping)
-        possible_moves, possible_attacks = piece.get_legal_moves(user_input, copy_of_game_state)
-        return PossibleMoveSet(possible_moves, possible_attacks)
+        return piece.get_legal_moves(user_input, copy_of_game_state)
 
 
 

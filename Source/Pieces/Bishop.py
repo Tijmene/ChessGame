@@ -1,5 +1,6 @@
 from Source.Pieces.Piece import Piece
 from Source.ChessUtils.Position import Position as Pos, vec_to_pos
+from Source.ChessUtils.PossibleMoveSet import PossibleMoveSet
 import numpy as np
 
 
@@ -9,9 +10,8 @@ class Bishop(Piece):
         self.points = 3
         return
 
-    def get_legal_moves(self, pos: Pos, square_mapping: dict) -> ([Pos], [Pos]):  # TODO: Implement
-        possible_moves = []
-        possible_attacks = []
+    def get_legal_moves(self, pos: Pos, square_mapping: dict) -> PossibleMoveSet:  # TODO: Implement
+        possible_moves = PossibleMoveSet()
 
         x, y = pos.to_vec()
         pos_vec = np.array([x, y])
@@ -30,15 +30,15 @@ class Bishop(Piece):
                     pos = vec_to_pos(all_directions[directions, 0], all_directions[directions, 1])
                     element = square_mapping[pos.__str__()]
                     if element is None and bishop_bool[directions]:
-                        possible_moves.append(pos)
+                        possible_moves.add_move(pos)
                         pass
                     elif element.color != self.color:
-                        possible_attacks.append(pos)
+                        possible_moves.add_attack(pos)
                         bishop_bool[directions] = False
                     else:
                         bishop_bool[directions] = False
 
-        return possible_moves, possible_attacks
+        return possible_moves
 
     def get_letter_code(self) -> chr:
         return "B"
