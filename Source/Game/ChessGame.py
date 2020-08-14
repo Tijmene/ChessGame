@@ -90,10 +90,10 @@ class ChessGame:
         return response
 
     def __handle_piece_taken(self, pos: Pos):
-        piece = self.board.query(pos)
-        points_earned = piece.points
+        piece_taken = self.board.query(pos)
+        points_earned = piece_taken.points
         for player in self.players:
-            if piece.is_black() and player.plays_white() or piece.is_white() and player.plays_white():
+            if (piece_taken.is_black() and player.plays_white()) or (piece_taken.is_white() and player.plays_black()):
                 player.points_earned += points_earned
 
     def __generate_legal_actions(self, user_input: Pos) -> ([Pos], [Pos]):

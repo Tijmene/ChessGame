@@ -21,3 +21,10 @@ class Player:
     def plays_black(self):
         return Color.BLACK == self.color
 
+    def __str__(self):
+        return "Player named {name} with elo: {elo}. " \
+               "Currently plays {color} and has {points} points.".format(name=self.name,
+                                                                         elo=self.elo,
+                                                                         color=self.color,
+                                                                         points=self.points_earned)
+
