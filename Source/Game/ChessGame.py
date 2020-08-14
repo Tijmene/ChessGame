@@ -18,7 +18,6 @@ class ChessGame:
     clock: ChessClock
     game_running: bool = True
     last_response_send = GUIResponse()
-    last_message_received = None
 
     def __init__(self, players: [Player], board: GameBoard, clock: ChessClock, gui_enabled=True):
         self.players = players
@@ -36,7 +35,7 @@ class ChessGame:
         # The main game loop executes here
         while self.game_running:
             self.board.draw()
-            user_input = self.check_for_user_input()
+            user_input = self.__check_for_user_input()
             if user_input is not None:
                 response = self.__generate_response(user_input)
                 if response is not None:
@@ -48,12 +47,11 @@ class ChessGame:
 
         self.clock.stop()
 
-    def check_for_user_input(self) -> Pos:
+    def __check_for_user_input(self) -> Pos:
         if self.q.empty():
             return None
         else:
-            self.last_message_received = self.q.get()
-            return self.last_message_received
+            return self.q.get()
 
     def __generate_response(self, user_input: Pos) -> GUIResponse:
         """ This method checks user input and decides what the necessary action is that should be executed

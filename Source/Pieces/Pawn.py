@@ -61,7 +61,7 @@ class Pawn(Piece):
         return possible_moves, possible_attacks
 
     def get_letter_code(self) -> chr:
-            return "P"
+        return "P"
 
 
 if __name__ == "__main__":

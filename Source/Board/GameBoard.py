@@ -77,12 +77,14 @@ class GameBoard:
         self.update_str_board = True
 
     def draw(self):
-        if self.gui is None:
-            self.str_print_on_update()
-        elif self.gui is not None:
+        """ If the GUI is enabled update the GUI. If the GUI is not enabled output
+        the string representation of the board"""
+        if self.gui is not None:
             self.gui.update()
+        elif self.gui is None:
+            self.__str_print_on_update()
 
-    def str_print_on_update(self):
+    def __str_print_on_update(self):
         if self.update_str_board:
             print("The GUI on this board is switched off, printing string representation \n "
                   "{string_board}".format(string_board=self))
