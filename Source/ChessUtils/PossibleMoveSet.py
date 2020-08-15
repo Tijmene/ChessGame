@@ -2,7 +2,6 @@ from Source.ChessUtils.Position import Position as Pos
 
 
 class PossibleMoveSet:
-
     def __init__(self):
         self.possible_moves = []
         self.possible_attacks = []

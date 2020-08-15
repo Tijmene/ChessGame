@@ -12,3 +12,6 @@ class Move:
 
     def __str__(self):
         return "A move from {from_pos} to {to_pos}".format(from_pos=self.from_pos, to_pos=self.to_pos)
+
+    def short_str(self):
+        return "M{from_pos}{to_pos}".format(from_pos=self.from_pos, to_pos=self.to_pos)

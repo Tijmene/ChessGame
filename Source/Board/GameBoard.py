@@ -9,6 +9,7 @@ from Source.Pieces.Knight import Knight
 from Source.ChessUtils.Position import Position as Pos
 from Source.ChessUtils.Color import Color
 from Source.ChessUtils.Move import Move
+from Source.ChessUtils.Standing import Standing
 from Source.Board.GUIBoard import GUIBoard
 
 
@@ -17,8 +18,12 @@ class GameBoard:
     gui: GUIBoard = None  # The class responsible for creating the Graphical User Interface for the board
     update_str_board = True  # This bool is used to redraw the string representation on updates(if gui is disabled)
 
-    def __init__(self):
-        self.square_mapping = self.__create_empty_board()
+    def __init__(self, square_mapping=None):
+        """ A board can be initialized with a certain setup or as an empty board """
+        if square_mapping is None:
+            self.square_mapping = self.__create_empty_board()
+        else:
+            self.square_mapping = square_mapping
 
     def enable_gui(self):
         self.gui = GUIBoard(self.square_mapping)
@@ -89,6 +94,18 @@ class GameBoard:
             print("The GUI on this board is switched off, printing string representation \n "
                   "{string_board}".format(string_board=self))
             self.update_str_board = False
+
+    def evaluate(self):  # TODO: Improve performance by dict holding only square names with pieces on them
+        black_standing = 139  # Total points for a full board.
+        white_standing = 139
+        for element in self.square_mapping.values():
+            if element is not None:
+                if element.is_white():
+                    white_standing -= element.points
+                if element.is_black():
+                    black_standing -= element.points
+
+        return Standing(black_standing=black_standing, white_standing=white_standing)
 
     def __str__(self):
         """ Converts the board to the string representation of the board """

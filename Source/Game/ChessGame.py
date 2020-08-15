@@ -44,6 +44,7 @@ class ChessGame:
                     if response.contains_move():
                         self.clock.switch()
                         self.turn_counter += 1
+                        print(self.board.evaluate())
 
         self.clock.stop()
 
