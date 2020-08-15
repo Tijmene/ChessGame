@@ -1,7 +1,7 @@
 from Source.Players.Player import Player
 from Source.ChessUtils.Move import Move
 from Source.ChessUtils.Position import Position as Pos
-from Source.Learning.SearchTree import GameTree
+from Source.Learning.GameTree import GameTree
 from Source.Board.GameBoard import GameBoard
 import copy
 
@@ -18,62 +18,62 @@ class AIPlayer(Player):
 
     response_breadth = 1
 
-    def calculate_next_move(self, board: GameBoard) -> Move:
+    def get_next_move(self, board: GameBoard) -> Move:
         # Create a new game tree with the current state of the board
         board_without_gui = GameBoard(copy.deepcopy(board.square_mapping))
         game_tree = GameTree(board=board_without_gui)
 
-        self.calculate_future_states(game_tree)
-        move = self.evaluate_future_state(game_tree)
+        self.__expand_game_tree(game_tree)
+        move = self.__evaluate_game_tree(game_tree)
 
-    def calculate_future_states(self, game_tree: GameTree):
+    def __expand_game_tree(self, game_tree: GameTree):
         """ Calculates the future states for a given GameTree Node """
 
         # The maximum depth has been reached, don't calculate any more future states.
         if game_tree.depth_level >= self.max_search_depth:
             return
         else:
-            high_value_squares = self.calculate_high_value_squares(game_tree)
-            for high_value_square in high_value_squares:
-                piece = game_tree.board.query(high_value_square)
-                legal_moves = piece.get_legal_moves(pos=high_value_square,
-                                                    square_mapping=game_tree.board.square_mapping)
+            interesting_moves = self.__generate_moves(game_tree.board)
 
-                for move in legal_moves.possible_moves:
-                    game_tree.create_future_state(Move(from_pos=high_value_square, to_pos=move))
-                for move in legal_moves.possible_attacks:
-                    game_tree.create_future_state(Move(from_pos=high_value_square, to_pos=move))
+            for interesting_move in interesting_moves:
+                game_tree.create_future_state(interesting_move)
 
-            # Simulate the response of the opponent
-            for child in game_tree.children.values():
-                response_move = self.simulate_response(child.board)
-                child.create_future_state(response_move)
-
-            if self.depth_level // 2 % self.current_prune_depth == 0:  # TODO: Divide by 2?
+            if self.depth_level % self.current_prune_depth == 0:
                 self.prune_game_tree(game_tree)
 
             # Recursively call the function on the children of the GameTree
-            for game in game_tree.get_all_leaves():
-                self.calculate_future_states(game)
+            for game_node in game_tree.children.values():
+                self.__expand_game_tree(game_node)
 
-    def calculate_high_value_squares(self, board: GameBoard) -> [Pos]:
+    def __generate_moves(self, board: GameBoard) -> [Move]:
+        """ Generates possible moves from a given board. Interesting squares are determined and all the possible
+         moves for each of these ssquares are generated. This list of moves is returned"""
+        high_value_squares = self.__predict_high_value_squares(board=board)
+        interesting_moves = []
+
+        for high_value_square in high_value_squares:
+            piece = board.query(high_value_square)
+            legal_moves = piece.get_legal_moves(pos=high_value_square,
+                                                square_mapping=board.square_mapping)
+
+            for target_pos in legal_moves.possible_moves + legal_moves.possible_attacks:
+                interesting_moves.append(Move(from_pos=high_value_square, to_pos=target_pos))
+
+        return interesting_moves
+
+    def __predict_high_value_squares(self, board: GameBoard) -> [Pos]:
         """ Function that uses a DNN to evaluate the GameTree Node and returns a list of high value squares"""
         high_value_squares = []
         # Generate list of high value squares with probability that the piece to be move is going to be in that square
         # Take the first self.search_breadth elements from this list and return these.
         return high_value_squares
 
-    def simulate_response(self, board: GameBoard) -> Move:
-        """ Simulates the response for the opponent """
-        # take only the n most likely responses where n = self.response_breadth
-        return None
-
-    def prune_future_states(self, game_tree: GameTree):
+    def __prune_future_states(self, game_tree: GameTree):
         """ Prunes the GameTree by removing branches that have low evaluations """
         for leaf in game_tree.get_all_leaves():
             self.evaluate_future_state(leaf.board)
 
-    def evaluate_future_state(self, game_tree: GameTree) -> Move:
+    def __evaluate_game_tree(self, game_tree: GameTree) -> Move:
         """ Calculate the point difference between this player and the opponent in this future state """
         return None
 

@@ -1,8 +1,11 @@
 import abc
 from Source.ChessUtils.Color import Color
+from Source.Board.GameBoard import GameBoard
+from Source.ChessUtils.Move import Move
 
 
 class Player:
+    """ A player has to implement the get_next_move method """
 
     __metaclass__ = abc.ABCMeta
     name: str
@@ -20,6 +23,10 @@ class Player:
 
     def plays_black(self):
         return Color.BLACK == self.color
+
+    @abc.abstractmethod
+    def get_next_move(self, board: GameBoard) -> Move:
+        return
 
     def __str__(self):
         return "Player named {name} with elo: {elo}. " \

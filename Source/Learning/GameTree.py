@@ -2,6 +2,7 @@ from __future__ import annotations
 from Source.Board.GameBoard import GameBoard
 from Source.ChessUtils.Move import Move
 from Source.ChessUtils.Position import Position as Pos
+from Source.ChessUtils.Standing import Standing
 import copy
 
 
@@ -14,9 +15,11 @@ class GameTree:
         self.depth_level = depth_level
 
     def create_future_state(self, move: Move):
+        """ Is called on a node to add a child with the transformed Board after the input move """
         copy_board = copy.deepcopy(self.board)
         copy_board.move_piece(move)
-        self.__add_child(GameTree(board=copy_board, move=move, depth_level=self.depth_level + 1))
+        child = GameTree(board=copy_board, move=move, depth_level=self.depth_level + 1)
+        self.__add_child(child)
 
     def __add_child(self, child: GameTree):
         if self.children is None:
@@ -35,22 +38,23 @@ class GameTree:
         del self.move
 
     def __get_root(self):
+        """ Returns the root of the GameTree"""
         if self.parent is None:
             return self
         else:
             self.parent.get_root
 
-    def get_leaves(self, result=[]):
-        if self.children is None:
-            return result + [self]
-        else:
-            for child in self.children.values():
-                child.get_leaves(result)
-
     def get_all_leaves(self):
         # first find the root node:
         root = self.__get_root()
-        leaves = root.get_leaves()
+        first_order_nodes = root.children.values()
+        for first_order_node in first_order_nodes:
+            leaves = root.get_leaves()
+
+
+    def evaluate(self) -> [(Move, Standing)]:
+        """ Returns all moves that are possible directly from the root of the tree paired with their average standing"""
+
 
 if __name__ == "__main__":
     testBoard1 = GameBoard()
