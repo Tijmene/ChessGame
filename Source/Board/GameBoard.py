@@ -99,15 +99,15 @@ class GameBoard:
                   "{string_board}".format(string_board=self))
             self.update_str_board = False
 
-    def evaluate(self):  # TODO: Improve performance by dict holding only square names with pieces on them
+    def evaluate(self) -> Standing:  # TODO: Improve performance by dict holding only square names with pieces on them
         black_standing = 139  # Total points for a full board.
         white_standing = 139
         for element in self.square_mapping.values():
             if element is not None:
                 if element.is_white():
-                    white_standing -= element.points
-                if element.is_black():
                     black_standing -= element.points
+                if element.is_black():
+                    white_standing -= element.points
 
         return Standing(black_standing=black_standing, white_standing=white_standing)
 
