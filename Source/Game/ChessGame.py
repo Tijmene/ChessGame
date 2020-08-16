@@ -61,11 +61,13 @@ class ChessGame:
         user_input = self.__check_for_user_input()
         if user_input is not None:
             response = self.__generate_response(user_input)
-            self.last_response_send = response
-            if response.contains_move():
+            if response is None:
+                return None
+            elif response.contains_move():
                 return response.move
             else:
                 self.q.put(response)
+                self.last_response_send = response
                 return None
         else:
             return None

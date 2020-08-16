@@ -73,13 +73,13 @@ class GameBoard:
 
     def query(self, pos: Pos) -> Piece:
         """ Queries the board and returns the piece if present, else returns None """
-        return self.square_mapping[pos.__str__()]
+        return self.square_mapping.get(pos.__str__())
 
     def move_piece(self, move: Move):
         """ Updates the position of a piece on the board """
         piece = self.square_mapping[move.from_pos.__str__()]
         if piece is None:
-            raise Exception("Error, there is no square to move on ths position")
+            raise Exception("Error, there is no square to move on ths position")  # Sanity check
         else:
             self.square_mapping[move.to_pos.__str__()] = piece
             self.square_mapping[move.from_pos.__str__()] = None
