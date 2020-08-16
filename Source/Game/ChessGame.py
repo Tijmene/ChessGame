@@ -35,18 +35,40 @@ class ChessGame:
         # The main game loop executes here
         while self.game_running:
             self.board.draw()
-            user_input = self.__check_for_user_input()
-            if user_input is not None:
-                response = self.__generate_response(user_input)
-                if response is not None:
-                    self.q.put(response)
-                    self.last_response_send = response
-                    if response.contains_move():
-                        self.clock.switch()
-                        self.turn_counter += 1
-                        print(self.board.evaluate())
+            move = self.__get_active_players_move()
+            if move is not None:
+                self.__send_move_to_gui(move)
+                self.clock.switch()
+                self.turn_counter += 1
+                print(self.board.evaluate())
 
         self.clock.stop()
+
+    def __get_active_players_move(self) -> Move:
+        # Direct the active player to make a move
+        for player in self.players:
+            if player.plays_black() and self.turn_counter % 2 == 0 \
+                    or player.plays_white() and self.turn_counter % 2 == 1:
+                move = player.get_next_move(self.board)
+
+        # If no move was generated it means that this is a human player and the move should be retrieved from the GUI
+        if move is None:
+            move = self.__communicate_with_gui()
+
+        return move
+
+    def __communicate_with_gui(self) -> Move:
+        user_input = self.__check_for_user_input()
+        if user_input is not None:
+            response = self.__generate_response(user_input)
+            self.last_response_send = response
+            if response.contains_move():
+                return response.move
+            else:
+                self.q.put(response)
+                return None
+        else:
+            return None
 
     def __check_for_user_input(self) -> Pos:
         if self.q.empty():
@@ -65,7 +87,6 @@ class ChessGame:
             # The new input was in the list of possible moves, a move has been made!
             if user_input in self.last_response_send.possible_move_set.possible_moves:
                 move = Move(self.last_response_send.highlight, user_input)
-                self.board.move_piece(move)
                 response.move = move
 
             # The new input was in the list of possible attacks, an enemy piece has been taken!
@@ -73,7 +94,6 @@ class ChessGame:
                 response.identifier_piece_taken = self.board.query(user_input).identifier
                 self.__handle_piece_taken(user_input)
                 move = Move(self.last_response_send.highlight, user_input)
-                self.board.move_piece(move)
                 response.move = move
 
         # The new input was not a square not in the possible moveset. The user input is either an illegal selection or
@@ -103,6 +123,12 @@ class ChessGame:
         piece = self.board.query(user_input)
         copy_of_game_state = copy.deepcopy(self.board.square_mapping)
         return piece.get_legal_moves(user_input, copy_of_game_state)
+
+    def __send_move_to_gui(self, move: Move):
+        gui_message = GUIResponse(move=move)
+        self.board.move_piece(move)
+        self.q.put(gui_message)
+
 
 
 

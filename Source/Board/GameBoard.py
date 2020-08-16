@@ -12,6 +12,7 @@ from Source.ChessUtils.Move import Move
 from Source.ChessUtils.Standing import Standing
 from Source.Board.GUIBoard import GUIBoard
 
+import numpy as np
 
 class GameBoard:
     square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
@@ -77,9 +78,12 @@ class GameBoard:
     def move_piece(self, move: Move):
         """ Updates the position of a piece on the board """
         piece = self.square_mapping[move.from_pos.__str__()]
-        self.square_mapping[move.to_pos.__str__()] = piece
-        self.square_mapping[move.from_pos.__str__()] = None
-        self.update_str_board = True
+        if piece is None:
+            raise Exception("Error, there is no square to move on ths position")
+        else:
+            self.square_mapping[move.to_pos.__str__()] = piece
+            self.square_mapping[move.from_pos.__str__()] = None
+            self.update_str_board = True
 
     def draw(self):
         """ If the GUI is enabled update the GUI. If the GUI is not enabled output
@@ -106,6 +110,26 @@ class GameBoard:
                     black_standing -= element.points
 
         return Standing(black_standing=black_standing, white_standing=white_standing)
+
+    def to_dnn_input(self) -> np.array:
+        """ Creates the input for the Deep Neural network architecture. This method initializes a numpy array,
+        loops over every square on a 8x8 board and inserts the oneHotEncoding for each element into the numpy array.
+        This creates an output of fixed length 64 * 12 = 768 which can be fed into the Deep Neural Net so that it can
+        use it to predict the next move. Only works with 8 by 8 boards """
+        dnn_input = []
+        one_hot_length = 12
+        for file in range(65, 73):
+            for rank in range(1, 9):
+                square = Pos(chr(file), rank).__str__()
+                piece = self.query(square)
+                if piece is None:
+                    one_hot_encoding = [0] * one_hot_length
+                elif piece is not None:
+                    one_hot_encoding = piece.oneHotEncoding
+
+                dnn_input.extend(one_hot_encoding)
+
+        return np.array(dnn_input, dtype=int)
 
     def __str__(self):
         """ Converts the board to the string representation of the board """
@@ -144,3 +168,7 @@ if __name__ == "__main__":
     board.move_piece(Move(Pos("E", 2), Pos("E", 4)))
     board.move_piece(Move(Pos("B", 8), Pos("C", 6)))
     print(board)
+
+    dnn_input = board.to_dnn_input()
+
+    pass

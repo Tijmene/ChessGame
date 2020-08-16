@@ -2,6 +2,7 @@ from Source.Game.ChessGame import ChessGame
 from Source.Clocks.NoIncrement import NoIncrement
 from Source.Board.GameBoard import GameBoard
 from Source.Players.HumanPlayer import HumanPlayer
+from Source.Players.AIPlayer import AIPlayer
 from Source.ChessUtils.Color import Color
 
 

@@ -8,4 +8,4 @@ class HumanPlayer(Player):
 
     def get_next_move(self, board: GameBoard) -> Move:
         """ Gets input from the GUI """
-        pass
+        return None
