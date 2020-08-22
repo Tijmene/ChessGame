@@ -2,6 +2,7 @@ from Source.Pieces.Piece import Piece
 from Source.ChessUtils.Position import Position as Pos, vec_to_pos
 from Source.ChessUtils.PossibleMoveSet import PossibleMoveSet
 from Source.ChessUtils.Color import Color
+from Source.ChessUtils.Move import Move
 
 
 class Pawn(Piece):
@@ -9,6 +10,15 @@ class Pawn(Piece):
     def set_points(self):
         self.points = 1
         return
+
+    def check_for_promotion(self, move: Move) -> bool:
+        rank = move.to_pos.get_rank()
+        if self.is_black() and rank == 8:
+            return True
+        elif self.is_white() and rank == 1:
+            return True
+        else:
+            return False
 
     def get_legal_moves(self, pos: Pos, square_mapping: dict) -> PossibleMoveSet:  # TODO: Implement
         possible_moves = PossibleMoveSet()
@@ -30,10 +40,7 @@ class Pawn(Piece):
                 y2 = y + 2
                 move_pos2 = vec_to_pos(x, y2)
                 element = square_mapping[move_pos2.__str__()]
-                # TODO: purpose of the next part is to exchange the pawn when end of the board is reached. This is
-                #  not possible yet.
-                # if y1 == 7:
-                #     Piece.pawn_to_queen(piece_to_move)
+
 
                 if element is None:
                     possible_moves.add_move(move_pos2)
