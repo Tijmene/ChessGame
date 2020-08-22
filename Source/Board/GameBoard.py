@@ -80,7 +80,11 @@ class GameBoard:
         """ Updates the position of a piece on the board """
         piece = self.square_mapping[move.from_pos.__str__()]
         if piece is None:
-            raise Exception("Error, there is no square to move on this position")  # Sanity check
+            raise Exception("Error, there is no square to move on ths position")  # Sanity check
+        elif isinstance(piece, Pawn) and piece.check_for_promotion(move=move):  # TODO: change GUI image of pawn to Queen
+            self.square_mapping[move.to_pos.__str__()] = Queen(color=piece.color, identifier=piece.identifier)
+            self.square_mapping[move.from_pos.__str__()] = None
+            self.update_str_board = True
         else:
             self.square_mapping[move.to_pos.__str__()] = piece
             self.square_mapping[move.from_pos.__str__()] = None
