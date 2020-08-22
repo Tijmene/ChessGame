@@ -7,7 +7,7 @@ import numpy as np
 
 class Rook(LinearPiece):
 
-    def get_move_vec(self) -> [[int]]:
+    def get_move_directions(self) -> [[int]]:
         return [[0, 1], [1, 0], [0, -1], [-1, 0]]
 
     def get_max_move_len(self) -> int:

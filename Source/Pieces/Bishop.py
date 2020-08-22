@@ -3,7 +3,7 @@ from Source.Pieces.LinearPiece import LinearPiece
 
 class Bishop(LinearPiece):
 
-    def get_move_vec(self) -> [[int]]:
+    def get_move_directions(self) -> [[int]]:
         return [[1, 1], [1, -1], [-1, -1], [-1, 1]]
 
     def get_max_move_len(self) -> int:

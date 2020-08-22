@@ -12,7 +12,7 @@ class LinearPiece(Piece):
 
     def get_legal_moves(self, pos: Pos, square_mapping: dict) -> PossibleMoveSet:
         possible_moves = PossibleMoveSet()
-        move_vec_list = self.get_move_vec()
+        move_vec_list = self.get_move_directions()
         max_move_len = self.get_max_move_len()
 
         x, y = pos.to_vec()
@@ -42,7 +42,7 @@ class LinearPiece(Piece):
         return possible_moves
 
     @abc.abstractmethod
-    def get_move_vec(self) -> [[int]]:
+    def get_move_directions(self) -> [[int]]:
         return None
 
     @abc.abstractmethod

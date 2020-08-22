@@ -10,7 +10,7 @@ class Queen(LinearPiece):
     def get_max_move_len(self) -> int:
         return 7
 
-    def get_move_vec(self) -> [[int]]:
+    def get_move_directions(self) -> [[int]]:
         return [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
 
     def set_points(self):
