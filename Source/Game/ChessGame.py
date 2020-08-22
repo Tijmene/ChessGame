@@ -7,6 +7,7 @@ from Source.ChessUtils.GUIResponse import GUIResponse
 from Source.ChessUtils.PossibleMoveSet import PossibleMoveSet
 import copy
 import queue
+import time
 
 
 class ChessGame:
@@ -28,6 +29,9 @@ class ChessGame:
             board.enable_gui()
             self.q = queue.Queue()
             board.connect(queue=self.q)
+
+        else:
+            self.q = None;
 
     def run(self):
         self.clock.start()

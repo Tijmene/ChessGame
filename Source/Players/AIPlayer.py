@@ -25,6 +25,7 @@ class AIPlayer(Player):
 
         self.__expand_game_tree(game_tree)
         move = self.__evaluate_game_tree(game_tree)
+        return move
 
     def __expand_game_tree(self, game_tree_node: GameTree):
         """ Calculates the future states for a given GameTree Node """

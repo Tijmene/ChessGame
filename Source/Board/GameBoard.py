@@ -14,6 +14,7 @@ from Source.Board.GUIBoard import GUIBoard
 
 import numpy as np
 
+
 class GameBoard:
     square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
     gui: GUIBoard = None  # The class responsible for creating the Graphical User Interface for the board
