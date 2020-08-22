@@ -4,4 +4,4 @@ __pycache__/
 
 Data/
 
-*.cfg
+venv/*.cfg

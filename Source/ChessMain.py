@@ -4,9 +4,11 @@ from Source.Board.GameBoard import GameBoard
 from Source.Players.HumanPlayer import HumanPlayer
 from Source.Players.AIPlayer import AIPlayer
 from Source.ChessUtils.Color import Color
+from Source.Pieces.Piece import Piece
 
 
 if __name__ == "__main__":
+
     player_1 = HumanPlayer("Simon", Color.WHITE)
     player_2 = HumanPlayer("Tijmen", Color.BLACK)
 

@@ -50,11 +50,11 @@ class Pawn(Piece):
             for i in [-1, 1]:
                 if 0 <= x + i < 8:
                     move_pos_capture = vec_to_pos((x + i), (y - 1))
-                    element = square_mapping[move_pos_capture.__str__()]
+                    element = square_mapping.get(move_pos_capture.__str__())
                     if element is not None and element.color != self.color:
                         possible_moves.add_attack(move_pos_capture)
 
-        element = square_mapping[move_pos.__str__()]
+        element = square_mapping.get(move_pos.__str__())
         if element is None:
             possible_moves.add_move(move_pos)
 

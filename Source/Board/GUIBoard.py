@@ -80,7 +80,7 @@ class GUIBoard(tk.Frame):
         pos_clicked_square = vec_to_pos(vec_x, vec_y)
         self.queue.put(pos_clicked_square)
 
-    def update(self):
+    def update(self):  # TODO: bugfix update yellow circles when resizing.
         """ This method can be called from outside of this class (e.g. from the main game loop) This updates the
         GUI. """
         message = self.__receive_messages()
