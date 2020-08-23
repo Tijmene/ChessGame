@@ -13,9 +13,7 @@ class Pawn(Piece):
 
     def check_for_promotion(self, move: Move) -> bool:
         rank = move.to_pos.get_rank()
-        if self.is_black() and rank == 8:
-            return True
-        elif self.is_white() and rank == 1:
+        if self.is_black() and rank == 1 or self.is_white() and rank == 8:
             return True
         else:
             return False
