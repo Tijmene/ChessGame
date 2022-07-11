@@ -4,7 +4,6 @@ from Source.Board.GameBoard import GameBoard
 from Source.Players.HumanPlayer import HumanPlayer
 from Source.Players.AIPlayer import AIPlayer
 from Source.ChessUtils.Color import Color
-from Source.Pieces.Piece import Piece
 
 
 if __name__ == "__main__":

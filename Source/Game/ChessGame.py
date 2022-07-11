@@ -20,7 +20,7 @@ class ChessGame:
     game_running: bool = True
     last_response_send = GUIResponse()
 
-    def __init__(self, players: [Player], board: GameBoard, clock: ChessClock, gui_enabled=True):
+    def __init__(self, players: [Player], board: GameBoard, clock: ChessClock, gui_enabled=True) -> None:
         self.players = players
         self.board = board
         self.clock = clock
@@ -31,13 +31,14 @@ class ChessGame:
             board.connect(queue=self.q)
 
         else:
-            self.q = None;
+            self.q = None
 
     def run(self):
         self.clock.start()
 
         # This is the main game loop
-        while self.game_running:
+        gui_enabled = True if self.board.gui is not None else False
+        while self.game_running and (gui_enabled or self.board.gui.is_opened):  # TODO: ugly, fix me!
             self.board.draw()
             move = self.__get_active_players_move()
 

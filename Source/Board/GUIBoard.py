@@ -25,6 +25,7 @@ class GUIBoard(tk.Frame):
         self.color_target_square = "khaki1"     # Color of the target square if it has no enemy in it
         self.piece_size = int(self.size * 0.7)  # Size of the pieces on the chessboard
         self.hit_scale = 0.05                   # Scale the hit circle
+        self.is_opened = True                   # Used to help kill the application
 
         #  Default values are overridden by provided values if they are present in the graphical_options variable.
         for (option, value) in graphical_options.items():
@@ -47,9 +48,10 @@ class GUIBoard(tk.Frame):
         self.__draw()
 
         # Bind actions to functions
-        self.canvas.bind("<Configure>", self.__handle_refresh)        # Reconfigurations such as a resize
-        self.canvas.bind("<Button-1>", self.__handle_mouse_click)  # Left mouse clicks
-        # TODO: Handle closing of window event.
+        self.canvas.bind("<Configure>", self.__handle_refresh)              # Reconfigurations such as a resize
+        self.canvas.bind("<Button-1>", self.__handle_mouse_click)           # Left mouse clicks
+        self.tk_root.protocol('WM_DELETE_WINDOW', self.__handle_window_close)
+        # self.canvas.bind("WM_DELETE_WINDOW", self.__handle_window_close)    # Handle window close
 
     def connect(self, queue):
         self.queue = queue
@@ -79,6 +81,11 @@ class GUIBoard(tk.Frame):
 
         pos_clicked_square = vec_to_pos(vec_x, vec_y)
         self.queue.put(pos_clicked_square)
+
+    def __handle_window_close(self):
+        print("The Chess application has been closed.")  # TODO: cause the game run loop to halt on closing via the gui
+        self.is_opened = False
+        self.tk_root.destroy()
 
     def update(self):  # TODO: bugfix update yellow circles when resizing.
         """ This method can be called from outside of this class (e.g. from the main game loop) This updates the

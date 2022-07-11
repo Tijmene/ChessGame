@@ -1,5 +1,5 @@
 # ChessGame
-A custom chess game
+A custom chess game that uses Tkinter to visualize a chess board.
 
 Make sure that the "home" location in the python venv/pyvenv.cfg is set to the base interpreter for python. 
 1) Open anaconda prompt and type in "where python"
