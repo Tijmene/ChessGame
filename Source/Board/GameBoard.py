@@ -10,42 +10,32 @@ from Source.ChessUtils.Position import Position as Pos
 from Source.ChessUtils.Color import Color
 from Source.ChessUtils.Move import Move
 from Source.ChessUtils.Standing import Standing
-from Source.Board.GUIBoard import GUIBoard
 
 import numpy as np
 
 
 class GameBoard:
     square_mapping: dict  # A mapping of position strings to chess pieces or empty squares.
-    gui: GUIBoard = None  # The class responsible for creating the Graphical User Interface for the board
-    update_str_board = True  # This bool is used to redraw the string representation on updates(if gui is disabled)
+    black_king_moved: bool  # Used for castling.
+    white_king_moved: bool  # Used for castling.
 
     def __init__(self, square_mapping=None):
-        """ A board can be initialized with a certain setup or as an empty board """
+        """ A board can be initialized with a certain setup or as an empty board (default) """
         if square_mapping is None:
-            self.square_mapping = self.__create_empty_board()
+            self.square_mapping = self._create_empty_board()
         else:
             self.square_mapping = square_mapping
 
-    def enable_gui(self):
-        self.gui = GUIBoard(self.square_mapping)
-
-    def connect(self, queue):
-        if self.gui is None:
-            raise Exception("The GUI is not enabled")
-        else:
-            self.gui.connect(queue)
-
-    def __create_empty_board(self) -> dict:
-        """ Creates an empty board which is a mapping of positions in File Rank format """
+    def _create_empty_board(self) -> dict:
+        """ Creates an empty board which contains all 64 positions in File Rank format """
         empty_board = dict()
-        for file in range(65, 73): # ASCII code for A - H
-            for rank in range(1, 9):
-                empty_board["{file}{rank}".format(file=chr(file), rank=rank)] = None
+        for file in range(65, 73):  # ASCII code for files A - H
+            for rank in range(1, 9):  # Ranks are 1 - 8
+                empty_board[f"{chr(file)}{rank}"] = None
         return empty_board
 
     def generate_default_setup(self):
-        """ Populates the board with the initial default chess setup """
+        """ Populates the board with the initial standard chess setup """
         piece_type_dict = {
             **dict.fromkeys(['A', 'H'], 'Rook'),
             **dict.fromkeys(['B', 'G'], 'Knight'),
@@ -58,10 +48,7 @@ class GameBoard:
             file = pos[0]
             rank = pos[1]
 
-            if rank == "1" or rank == "2":
-                color = Color.WHITE
-            elif rank == "7" or rank == "8":
-                color = Color.BLACK
+            color = Color.WHITE if rank == "1" or rank == "2" else Color.BLACK
 
             if rank == "2" or rank == "7":
                 self.square_mapping[pos] = Pawn(color=color,
@@ -73,46 +60,31 @@ class GameBoard:
                                                identifier=pos)
 
     def query(self, pos: Pos) -> Piece:
-        """ Queries the board and returns the piece if present, else returns None """
+        """ Queries a square of the board and returns the piece if present, else returns None """
         return self.square_mapping.get(pos.__str__())
 
     def move_piece(self, move: Move):
         """ Updates the position of a piece on the board """
         piece = self.square_mapping[move.from_pos.__str__()]
         if piece is None:
-            raise Exception("Error, there is no square to move on ths position")  # Sanity check
-        elif isinstance(piece, Pawn) and piece.check_for_promotion(move=move):  # TODO: change GUI image of pawn to Queen
-            self.square_mapping[move.to_pos.__str__()] = Queen(color=piece.color, identifier=piece.identifier)
-            self.square_mapping[move.from_pos.__str__()] = None
-            self.update_str_board = True
-        else:
-            self.square_mapping[move.to_pos.__str__()] = piece
-            self.square_mapping[move.from_pos.__str__()] = None
-            self.update_str_board = True
+            raise Exception(f"Error, there is no piece on square {move.from_pos} to move.")  # Sanity check
+        elif move.promoted_to:
+            promoted_piece_name = move.promoted_to
+            cls = globals()[promoted_piece_name]  # Loads the class via the name of the class.
+            piece = cls(color=piece.color, identifier=piece.identifier)
 
-    def draw(self):
-        """ If the GUI is enabled update the GUI. If the GUI is not enabled output
-        the string representation of the board"""
-        if self.gui is not None:
-            self.gui.update()
-        elif self.gui is None:
-            self.__str_print_on_update()
-
-    def __str_print_on_update(self):
-        if self.update_str_board:
-            print("The GUI on this board is switched off, printing string representation \n "
-                  "{string_board}".format(string_board=self))
-            self.update_str_board = False
+        self.square_mapping[move.to_pos.__str__()] = piece
+        self.square_mapping[move.from_pos.__str__()] = None
 
     def evaluate(self) -> Standing:  # TODO: Improve performance by dict holding only square names with pieces on them
-        black_standing = 139  # Total points for a full board.
-        white_standing = 139
-        for element in self.square_mapping.values():
-            if element is not None:
-                if element.is_white():
-                    black_standing -= element.points
-                if element.is_black():
-                    white_standing -= element.points
+        black_standing = 0
+        white_standing = 0
+        for piece in self.square_mapping.values():
+            if piece is not None:
+                if piece.is_white():
+                    white_standing += piece.points
+                if piece.is_black():
+                    black_standing += piece.points
 
         return Standing(black_standing=black_standing, white_standing=white_standing)
 
@@ -147,8 +119,8 @@ class GameBoard:
         for rank in ranks:  # ASCII code for A - H
             str_output += "|"
             for file in files:
-                content = self.square_mapping["{file}{rank}".format(file=chr(file), rank=rank)]
-                if content is None:  # Create a checker board pattern with white and black squares.
+                content = self.square_mapping[f"{chr(file)}{rank}"]
+                if content is None:  # Create a checkerboard pattern with white and black squares.
                     if file % 2 == 0 and rank % 2 == 0 or file % 2 != 0 and rank % 2 != 0:
                         str_output += "\u0332 |"
                     else:
@@ -157,9 +129,9 @@ class GameBoard:
                 else:
                     piece = content
                     letter_code = piece.get_letter_code()
-                    if content.is_white():
+                    if piece.is_white():
                         str_output += "\u0332\033[1m" + letter_code + "|"
-                    elif content.is_black():
+                    elif piece.is_black():
                         str_output += "\u0332" + letter_code + "|"
 
             str_output += "\n"
@@ -175,5 +147,4 @@ if __name__ == "__main__":
     print(board)
 
     dnn_input = board.to_dnn_input()
-
-    pass
+    

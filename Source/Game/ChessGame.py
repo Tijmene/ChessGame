@@ -1,3 +1,7 @@
+import threading
+
+from Source.Board.GUIBoard import GUIBoard
+from Source.ChessUtils.Color import Color
 from Source.Players.Player import Player
 from Source.Board.GameBoard import GameBoard
 from Source.Clocks.ChessClock import ChessClock
@@ -14,49 +18,47 @@ class ChessGame:
     """ The top level class of the program. The ChessGame holds all information necesary to run a complete game of chess
     This class also takes care of the interaction between player and game """
     players: [Player]
-    turn_counter = 1
+    turn_counter = 1   # Turn index starts at 1
     board: GameBoard
+    gui: GUIBoard
     clock: ChessClock
     game_running: bool = True
     last_response_send = GUIResponse()
 
     def __init__(self, players: [Player], board: GameBoard, clock: ChessClock, gui_enabled=True) -> None:
+        if len(players) != 2:
+            raise ValueError("The number of players should be two")
+
         self.players = players
         self.board = board
         self.clock = clock
 
         if gui_enabled:
-            board.enable_gui()
-            self.q = queue.Queue()
-            board.connect(queue=self.q)
+            self.gui = GUIBoard(board)
 
-        else:
-            self.q = None
-
-    def run(self):
+    def start(self):
         self.clock.start()
 
+        gui_thread = threading.Thread(target=self.gui.run)
+        gui_thread.start()
+
         # This is the main game loop
-        gui_enabled = True if self.board.gui is not None else False
-        while self.game_running and (gui_enabled or self.board.gui.is_opened):  # TODO: ugly, fix me!
-            self.board.draw()
+        while self.game_running:
             move = self.__get_active_players_move()
+            self.board.update(move)
+            self.gui.update(self.board)
+            self.clock.switch()
+            self.turn_counter += 1
+            print(self.board.evaluate())
 
-            # A move was generated, update and send it to the GUI
-            if move is not None:
-                self.__send_move_to_gui(move)
-                self.clock.switch()
-                self.turn_counter += 1
-                print(self.board.evaluate())
-
+        gui_thread.join()
         self.clock.stop()
 
     def __get_active_players_move(self) -> Move:
         # Direct the active player to make a move
-        for player in self.players:
-            if player.plays_black() and self.turn_counter % 2 == 0 \
-                    or player.plays_white() and self.turn_counter % 2 == 1:
-                move = player.get_next_move(self.board)
+        colors_turn = Color.BLACK if self.turn_counter % 2 == 0 else Color.WHITE
+        active_player = self.players[0] if self.players[0].color == colors_turn else self.players[1]
+        move = active_player.get_next_move(self.board)
 
         # If no move was generated it means that this is a human player and the move should be retrieved from the GUI
         if move is None:

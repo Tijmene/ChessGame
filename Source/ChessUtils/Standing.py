@@ -7,5 +7,11 @@ class Standing:
         self.white_standing = white_standing
 
     def __str__(self):
-        return f"Standing: Black has {self.black_standing} point{'s' if self.black_standing != 1  else ''}" \
-               f", White has {self.white_standing} point{'s' if self.white_standing != 1 else ''}"
+        if self.black_standing == self.white_standing:
+            return "Both players have equal points!"
+        elif self.black_standing > self.white_standing:
+            point_lead = self.black_standing - self.white_standing
+            return f"Black is leading by {point_lead} point{'s' if point_lead > 1 else ''}!"
+        else:
+            point_lead = self.white_standing - self.black_standing
+            return f"White is leading by {point_lead} point{'s' if point_lead > 1 else ''}!"

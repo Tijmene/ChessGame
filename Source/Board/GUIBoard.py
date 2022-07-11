@@ -1,3 +1,4 @@
+from Source.Board.GameBoard import GameBoard
 from Source.ChessUtils.Position import Position as Pos, vec_to_pos
 from Source.ChessUtils.GUIResponse import GUIResponse
 import tkinter as tk
@@ -8,11 +9,11 @@ from PIL import Image
 
 class GUIBoard(tk.Frame):
     """ Creates the graphical user interface (GUI) that displays the current state of the board """
-    square_mapping: dict
+    game_board: GameBoard
     queue = None
 
-    def __init__(self, square_mapping: dict, **graphical_options):
-        self.square_mapping = square_mapping
+    def __init__(self, game_board: GameBoard, **graphical_options):
+        self.game_board = game_board
 
         # Fields related to the display of the board and their Default values
         self.rows = 8                           # Amount of rows that the board has
@@ -52,6 +53,11 @@ class GUIBoard(tk.Frame):
         self.canvas.bind("<Button-1>", self.__handle_mouse_click)           # Left mouse clicks
         self.tk_root.protocol('WM_DELETE_WINDOW', self.__handle_window_close)
         # self.canvas.bind("WM_DELETE_WINDOW", self.__handle_window_close)    # Handle window close
+
+    def run(self):
+        while True:
+            self.__draw()
+
 
     def connect(self, queue):
         self.queue = queue
@@ -173,7 +179,7 @@ class GUIBoard(tk.Frame):
                 color = self.color_white if color == self.color_black else self.color_black
 
     def __place_pieces(self):
-        for pos_str, piece in self.square_mapping.items():
+        for pos_str, piece in self.game_board.items():
             if piece is not None:
                 pos = Pos(pos_str[0], int(pos_str[1]))
                 vec_x, vec_y = pos.to_vec()
@@ -182,7 +188,7 @@ class GUIBoard(tk.Frame):
                 self.canvas.coords(piece.identifier, x0, y0)
 
     def __load_pieces(self):
-        for pos, piece in self.square_mapping.items():
+        for pos, piece in self.game_board.items():
             if piece is not None:
                 image_name = str(piece.color)[0] + piece.get_letter_code()
                 image_file = PIL.Image \

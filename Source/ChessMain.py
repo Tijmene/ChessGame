@@ -18,4 +18,4 @@ if __name__ == "__main__":
                      board=board,
                      clock=NoIncrement(),
                      gui_enabled=True)
-    game.run()
+    game.start()
