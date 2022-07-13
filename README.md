@@ -1,5 +1,6 @@
 # ChessGame
-A custom chess game that uses Tkinter to visualize a chess board.
+A custom chess game that uses Tkinter to visualize a chess board. The ChessMain.py file setups up the game. 
+The top level class for the chess game is the Game.ChessGame.py class. 
 
 Make sure that the "home" location in the python venv/pyvenv.cfg is set to the base interpreter for python. 
 1) Open anaconda prompt and type in "where python"
@@ -8,4 +9,4 @@ Make sure that the "home" location in the python venv/pyvenv.cfg is set to the b
 
 home = C:\Users\tijme\AppData\Local\Continuum\anaconda3
 include-system-site-packages = false
-version = 3.7.1 
+version = 3.10
