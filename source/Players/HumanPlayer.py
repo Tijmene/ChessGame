@@ -6,7 +6,9 @@ import queue
 
 
 class HumanPlayer(Player):
-    """ This class could hold player specific information or characteristics """
+    """
+    This class holds player specific information or characteristics
+    """
     gui_connection: queue.Queue
 
     def __init__(self, name: str, color: Color):
@@ -16,8 +18,8 @@ class HumanPlayer(Player):
     def get_next_move(self, board: GameBoard) -> Move:
         """
         Human players get their moves by interacting with the gui and do not directly use the board variable.
-        :param board:
-        :return: the move decided on by the player via the GUI
+        :param board: :class:`GameBoard` describes the current state of the game board.
+        :return: the :class:`Move` decided on by the player via the GUI
         """
         response = self.gui_connection.get()
         assert isinstance(response, Move), f"Expected a response of type Move but received response: {response} " \

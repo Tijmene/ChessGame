@@ -1,4 +1,3 @@
-from source.Game import GameMaster
 from source.Pieces.Piece import Piece    # Don't remove, needed for image loading
 from source.Pieces.Pawn import Pawn      # Don't remove, needed for image loading
 from source.Pieces.Bishop import Bishop  # Don't remove, needed for image loading
@@ -25,7 +24,7 @@ class GameBoard:
     def __init__(self, square_mapping: dict = None):
         """
         A board can be initialized with a certain setup or as an empty board (default)
-        :param square_mapping: a default squaremapping (a dictionary of squares to :class:`Piece`) can be provided
+        :param square_mapping: a default squaremapping a dictionary of squares to :class:`Piece` can be provided
         as input to load a different chess setup. By default, an empty board is loaded.
         """
         if square_mapping is None:
@@ -87,7 +86,7 @@ class GameBoard:
     def move_piece(self, move: Move) -> None:
         """
         Updates the position of a piece on the board
-        :param move: :class:`Move` the move that has to be executed on the board.
+        :param move: The :class:`Move` that has to be executed on the board.
         """
         piece = self.square_mapping[move.from_pos.__str__()]
         if piece is None:
