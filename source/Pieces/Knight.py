@@ -6,10 +6,12 @@ import numpy as np
 
 
 class Knight(Piece):
+    """
+    The knight can hop over other pieces in an L shape move ([1,2] or [2,1])
+    """
 
-    def set_points(self):
+    def set_points(self) -> None:
         self.points = 3
-        return
 
     def get_legal_moves(self, current_pos: Pos, game_board: GameBoard) -> PossibleMoveSet:
         possible_moves = PossibleMoveSet(current_pos)

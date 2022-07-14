@@ -5,7 +5,11 @@ from source.ChessUtils.PossibleMoveSet import PossibleMoveSet
 
 def generate_moves(game_board: GameBoard,
                    clicked_position: Position) -> PossibleMoveSet:
-    """ Generates all the possible moves from a clicked position on the chess board """
+    """ Generates all the possible moves from a clicked position on the chess board
+    :param game_board: :class:`Gameboard` that contains all the necessary information to calculate possible moves
+    :param clicked_position: :class:`Position` the position (square) from which all possible moves have to be calculated
+    :return: The :class:`PossibleMoveSet` which contains all possible moves and attacks from a square.
+    """
     piece = game_board.query(clicked_position)
 
     # No piece is present on the clicked square, we return the still empty PossibleMoveSet

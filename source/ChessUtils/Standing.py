@@ -1,4 +1,7 @@
 class Standing:
+    """
+    A summary of the points in possession for each color in the chess game.
+    """
     black_standing: int
     white_standing: int
 

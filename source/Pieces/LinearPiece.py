@@ -9,6 +9,9 @@ from source.Pieces.Piece import Piece
 
 
 class LinearPiece(Piece):
+    """
+    All pieces that move in a line (every piece except the Pawn and Knight) inherit from this class.
+    """
     __metaclass__ = abc.ABCMeta     # This declares this class as abstract.
 
     def get_legal_moves(self, from_pos: Pos, game_board: GameBoard) -> PossibleMoveSet:

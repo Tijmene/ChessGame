@@ -7,6 +7,9 @@ import copy
 
 
 class AIPlayer(Player):
+    """
+    Player who automatically makes decisions
+    """
     current_search_depth = 0
     max_search_depth = 6    # The depth of the search tree, a level is a round in which both players have taken a turn
 

@@ -7,6 +7,7 @@ from source.ChessUtils.Move import Move
 
 
 class Pawn(Piece):
+    """ The Pawn can only move forward. """
 
     def set_points(self):
         self.points = 1
